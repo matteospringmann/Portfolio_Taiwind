@@ -7,12 +7,12 @@
     <meta name="keywords" content="cv, mattéo, springmann, epitech, Portfolio, cv, développeur, informatique">
     <meta name="author" content="Mattéo Springmann">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="media/epitech_logo.png">
     <link rel="stylesheet" href="src/input.css">
     <link rel="stylesheet" href="src/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="https://unpkg.com/@heroicons/react@1.0.6/outline/index.js"></script>
-    <title>Feur</title>
+    <title>Portfolio | Mattéo Springmann</title>
 </head>
 <body class="bg-zinc-100">
     
@@ -23,13 +23,13 @@
         </div>
         <div class="flex text-lg max-sm:px-2 max-sm:py-5 max-sm:items-center">
             <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Accueil">Accueil</a>
-            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#pres">Compétences</a>
-            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="">Projets</a>
-            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-1 max-sm:hidden" href="">Offre</a>
-            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="">Contact</a>
+            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Competences">Compétences</a>
+            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Projets">Projets</a>
+            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-1 max-sm:hidden" href="#Offre">Offre</a>
+            <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Contact">Contact</a>
         </div>
         <div class="">
-            <button class="m-3 border-2 border-transparent transition-all ease-in-out duration-300 bg-blue-200 py-1 px-8 text-lg rounded-2xl shadow-xl hover:bg-blue-400 hover:text-white hover:shadow-xl max-sm:my-5">Me Contacter</button>
+            <a href="#Contact" class="m-3 border-2 border-transparent transition-all ease-in-out duration-300 bg-blue-200 py-1 px-8 text-lg rounded-2xl shadow-xl hover:bg-blue-400 hover:text-white hover:shadow-xl max-sm:my-5">Me Contacter</a href="#Contact">
         </div>
     </header>
 
@@ -48,7 +48,7 @@
         </div>
     </section>
 
-    <section id="pres" class="w-full mb-20">
+    <section id="Presentation" class="w-full mb-20">
         <div class="flex flex-row gap-4 justify-center max-sm:mb-10">
             <h1 class="text-center text-5xl text-blue-200 max-2xl:text-4xl">«</h1>
             <h1 class="text-center text-5xl uppercase max-2xl:text-4xl">Bienvenue</h1>
@@ -97,7 +97,7 @@
         </div>
     </section>
 
-    <section class="w-full mb-20">
+    <section id="Competences" class="w-full mb-20">
         <div class="flex flex-rox gap-4 justify-center mb-10">
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">«</h1>
             <h1 class="text-center uppercase text-5xl max-sm:hidden">Compétences et expèriences</h1>
@@ -176,7 +176,7 @@
     </section>
 
     <footer class="w-full bg-blue-300 p-14 flex flex-col gap-8">
-        <div class="w-[30] mx-auto flex justify-between items-center text-lg font-light max-sm:gap-3 max-sm:w-full max-sm:justify-center">
+        <div class="w-[30] mx-auto flex justify-between items-center gap-8 text-lg font-light max-sm:gap-3 max-sm:w-full max-sm:justify-center">
             <a class="hover:scale-105 hover:text-white" href="">About</a>
             <a class="hover:scale-105 hover:text-white" href="">Blog</a>
             <a class="hover:scale-105 hover:text-white" href="">Jobs</a>
