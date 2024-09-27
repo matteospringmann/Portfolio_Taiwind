@@ -29,3 +29,12 @@ body {
     color: black;
     /* scale: 1.2; */
 }
+
+.hidden {
+    display: none;
+}
+
+.active-btn {
+    background-color: rgb(59 130 246) !important;
+    color: white;
+}
