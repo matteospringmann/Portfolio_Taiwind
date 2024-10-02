@@ -107,7 +107,7 @@
 
         <div>
             <div class="w-full flex flex-row justify-center gap-10 mb-10 max-sm:flex-col max-sm:w-1/2 max-sm:m-auto max-sm:my-10 max-sm:gap-5">
-                <a class="btn-toggle p-3 min-w-40 text-center bg-blue-300 rounded-xl shadow-xl transition-all ease-in-out duration-300 hover:shadow-2xl hover:bg-blue-500 hover:text-white" data-section="competences" href="#">Compétences</a>
+                <a class="btn-toggle active-btn scale-110 p-3 min-w-40 text-center bg-blue-300 rounded-xl shadow-xl transition-all ease-in-out duration-300 hover:shadow-2xl hover:bg-blue-500 hover:text-white" data-section="competences" href="#">Compétences</a>
                 <a class="btn-toggle p-3 min-w-40 text-center bg-blue-300 rounded-xl shadow-xl transition-all ease-in-out duration-300 hover:shadow-2xl hover:bg-blue-500 hover:text-white" data-section="experiences" href="#">Expèriences</a>
                 <a class="btn-toggle p-3 min-w-40 text-center bg-blue-300 rounded-xl shadow-xl transition-all ease-in-out duration-300 hover:shadow-2xl hover:bg-blue-500 hover:text-white" data-section="scolarite" href="#">Scolarité</a>
             </div>
@@ -389,10 +389,12 @@
                 // Retirer la classe active de tous les boutons
                 document.querySelectorAll('.btn-toggle').forEach(btn => {
                     btn.classList.remove('active-btn');
+                    btn.classList.remove('scale-110');
                 });
 
                 // Ajouter la classe active au bouton cliqué
                 this.classList.add('active-btn');
+                this.classList.add('scale-110');
             });
         });
     </script>
