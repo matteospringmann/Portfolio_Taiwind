@@ -16,12 +16,12 @@
 </head>
 <body class="bg-zinc-100">
     
-    <header class="bg-white fixed w-full py-3 m-auto px-20 flex justify-between items-center z-50 max-sm:relative max-sm:pb-5 max-sm:w-full max-sm:m-auto max-sm:flex-col">
+    <header class="bg-white fixed w-full py-3 m-auto px-20 flex justify-between items-center z-50 max-sm:relative max-sm:pb-7 max-sm:w-full max-sm:m-auto max-sm:flex-col">
         <div class="flex flex-row items-center max-sm:px-5 max-sm:pt-5 max-sm:justify-between max-sm:w-[17rem]">
             <img class="w-14 rounded-full" src="media/profil_picture.jpg" alt="">
             <h1 class="p-4 font-bold text-lg max-sm:p-0 max-sm:text-center max-sm:text-md">Mattéo Springmann</h1>
         </div>
-        <div class="flex text-lg max-sm:px-2 max-sm:py-5 max-sm:items-center">
+        <div class="flex text-lg max-sm:px-2 max-sm:py-7 max-sm:items-center">
             <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Accueil">Accueil</a>
             <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Competences">Compétences</a>
             <a class="mx-3 border-b-[1px] border-transparent transition-all ease-in-out duration-300 hover:border-current max-sm:mx-2" href="#Projets">Projets</a>
@@ -276,15 +276,15 @@
     </section>
 
     <section id="Offre" class="fade-in-section mt-24">
-        <div class="flex flex-row p-4 justify-center mb-10">
+        <div class="flex flex-row p-4 justify-center mb-10 max-sm:mb-5">
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">« </h1>
             <h1 class="text-center uppercase text-5xl max-sm:hidden">Travaillons ensemble !</h1>
             <h1 class="text-center uppercase text-5xl hidden max-sm:text-4xl max-sm:flex">Mon Offre</h1>
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl"> »</h1>
         </div>
     
-        <div class="w-[70%] m-auto mb-10">
-            <p class="text-center text-2xl">Je peux dès à présent vous aidez à bâtir un site web moderne et personnalisé, à l'image de votre entreprise ou de votre activité, afin de mettre votre service/produits en lumière et avoir une meilleure présence en ligne.</p>
+        <div class="w-[70%] m-auto mb-10 max-sm:w-[85%]">
+            <p class="text-center text-2xl max-sm:text-lg">Je peux dès à présent vous aidez à bâtir un site web moderne et personnalisé, à l'image de votre entreprise ou de votre activité, afin de mettre votre service/produits en lumière et avoir une meilleure présence en ligne.</p>
         </div>
     
         <div class="flex flex-wrap justify-center gap-14 max-sm:flex-col max-sm:items-center max-sm:mb-20">
@@ -308,22 +308,22 @@
     
 
     <div id="Contact" class="fade-in-section w-full p-20 max-lg:p-4">
-        <div class="flex flex-row gap-5 items-center justify-center mb-5">
+        <div class="flex flex-row gap-5 items-center justify-center mb-5 max-lg:mb-0">
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">«</h1>
             <h1 class="text-center text-5xl uppercase max-sm:text-4xl">Contactez-moi</h1>
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">»</h1>
         </div>
-        <div class="flex gap-20 m-auto items-start w-[80%] max-lg:w-full max-lg:gap-5">
-            <div class="w-[50%] m-auto flex flex-col gap-10 mt-10">
+        <div class="flex gap-20 m-auto items-start w-[80%] max-lg:w-full max-lg:gap-0 max-lg:flex-col max-lg:mb-16">
+            <div class="w-[50%] m-auto flex flex-col gap-10 mt-10 order-1 max-lg:order-2 max-lg:w-[80%]">
                 <form class="flex flex-col gap-5">
                     <div class="flex flex-row justify-between max-lg:flex-col max-lg:gap-3">
                         <div class="flex flex-col gap-2">
                             <label for="firstname" class="text-lg">Prénom</label>
-                            <input type="text" id="firstname" name="firstname" class="w-44 p-2 bg-white rounded-lg border-zinc-300 border-[1px] transition-all ease-in-out duration-300 hover:shadow-2xl">
+                            <input type="text" id="firstname" name="firstname" class="w-44 p-2 bg-white rounded-lg border-zinc-300 border-[1px] transition-all ease-in-out duration-300 hover:shadow-2xl max-lg:w-full">
                         </div>
                         <div class="flex flex-col gap-2">
                             <label for="name" class="text-lg">Nom</label>
-                            <input type="text" id="name" name="name" class="w-44 p-2 bg-white rounded-lg border-zinc-300 border-[1px] transition-all ease-in-out duration-300 hover:shadow-2xl">
+                            <input type="text" id="name" name="name" class="w-44 p-2 bg-white rounded-lg border-zinc-300 border-[1px] transition-all ease-in-out duration-300 hover:shadow-2xl max-lg:w-full">
                         </div>
                     </div>
                     <div class="flex flex-col gap-2">
@@ -341,8 +341,8 @@
                     <button type="submit" class="p-3 bg-blue-300 text-white rounded-lg transition-all ease-in-out duration-300 hover:shadow-2xl hover:bg-blue-500">Envoyer</button>
                 </form>
             </div>
-
-            <div class="flex flex-col justify-start gap-10 w-[50%] mt-20">
+        
+            <div class="flex flex-col justify-start gap-10 w-[50%] mt-20 mx-auto max-sm:w-[80%] max-lg:text-center order-2 max-lg:order-1">
                 <h1 class="text-3xl">Restons en contact !</h1>
                 <p class="text-lg">Vous avez des questions ? Une opportunité ? Une demande ? Contactez-moi et nous pourrons en discuter. À Bientôt !</p>
                 <a href="mailto:matteo.springmann@epitech.eu" class="text-blue-500 mb-0 hover:text-blue-700">matteo.springmann@epitech.eu</a>
@@ -435,24 +435,29 @@
     const faders = document.querySelectorAll('.fade-in-section');
   
     const appearOptions = {
-      threshold: 0.15, // Ajusté pour déclencher l'animation un peu plus tôt
-      rootMargin: "0px"
+      threshold: 0,
+      rootMargin: "0px 0px -100px 0px"
     };
   
-    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+    const appearOnScroll = new IntersectionObserver(function(
+      entries,
+      appearOnScroll
+    ) {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+        if (!entry.isIntersecting) {
+          return;
         } else {
-          entry.target.classList.remove('is-visible');
+          entry.target.classList.add('is-visible');
+          appearOnScroll.unobserve(entry.target);
         }
       });
-    }, appearOptions);
+    },
+    appearOptions);
   
     faders.forEach(fader => {
       appearOnScroll.observe(fader);
     });
-  </script>
+</script>
 
 </body>
 </html>
