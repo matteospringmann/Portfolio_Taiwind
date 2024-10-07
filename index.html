@@ -33,7 +33,7 @@
         </div>
     </header>
 
-    <section id="Accueil" class="w-full bg-blue-200 mb-20 pt-20 max-sm:pt-2">
+    <section id="Accueil" class="fade-in-section w-full bg-blue-200 mb-20 pt-20 max-sm:pt-2">
         <div class="flex flex-col items-center p-12 max-sm:p-10">
             <div class="m-5 text-4xl font-bold max-sm:m-2 max-sm:text-3xl">
                 <h1>Mattéo Springmann</h1>
@@ -48,7 +48,7 @@
         </div>
     </section>
 
-    <section id="Presentation" class="w-full mb-12">
+    <section id="Presentation" class="fade-in-section w-full mb-12">
         <div class="flex flex-row gap-4 justify-center max-sm:mb-10">
             <h1 class="text-center text-5xl text-blue-200">«</h1>
             <h1 class="text-center text-5xl uppercase">Bienvenue</h1>
@@ -97,7 +97,7 @@
         </div>
     </section>
 
-    <section id="Competences" class="w-full mb-20">
+    <section id="Competences" class="fade-in-section w-full mb-20">
         <div class="flex flex-rox gap-4 justify-center mb-10">
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">«</h1>
             <h1 class="text-center uppercase text-5xl max-sm:hidden">Compétences et expèriences</h1>
@@ -210,72 +210,104 @@
             </div>
     </section>
 
-    <div id="Projets" class="flex flex-row gap-4 justify-center mb-8 max-sm:mb-10">
-        <h1 class="text-center text-5xl text-blue-200">«</h1>
-        <h1 class="text-center text-5xl uppercase">Projets</h1>
-        <h1 class="text-center text-5xl text-blue-200">»</h1>
-    </div>
-
-    <div class="w-[65%] mx-auto mb-16">
-        <p class="text-2xl text-center">Voici la liste des projets que j'ai pu réaliser en tant que développeur jusque ici, aussi bien dans le cadre de mes études que dans un but personnel :</p>
-    </div>
-
-    <div class="w-[80%] 2xl:w-[90%] m-auto mt-20 mb-10">
-        <div class="grid grid-cols-2 gap-20 justify-items-center max-lg:grid-cols-1 2xl:grid-cols-3">
-            <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
-                <a href="ca_arrive_fort.html" class="w-full">
-                    <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/rpg.png" alt="">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
-                        <div class="text-center">
-                            <p class="text-white text-xl">SAVERNE_RPG</p>
-                            <p class="text-white font-extralight">Un projet graphique utilisant la CSFML</p>
+    <section id="Projets" class="fade-in-section">
+        <div class="flex flex-row gap-4 justify-center mb-8 max-sm:mb-10">
+            <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">«</h1>
+            <h1 class="text-center text-5xl uppercase max-sm:text-4xl">Projets</h1>
+            <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">»</h1>
+        </div>
+    
+        <div class="w-[65%] mx-auto mb-16">
+            <p class="text-2xl text-center">Voici la liste des projets que j'ai pu réaliser en tant que développeur jusque ici, aussi bien dans le cadre de mes études que dans un but personnel :</p>
+        </div>
+    
+        <div class="w-[80%] 2xl:w-[90%] m-auto mt-20 mb-10">
+            <div class="grid grid-cols-2 gap-20 justify-items-center max-lg:grid-cols-1 2xl:grid-cols-3">
+                <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
+                    <a href="ca_arrive_fort.html" class="w-full">
+                        <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/rpg.png" alt="">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
+                            <div class="text-center">
+                                <p class="text-white text-xl">SAVERNE_RPG</p>
+                                <p class="text-white font-extralight">Un projet graphique utilisant la CSFML</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
-                <a href="ca_arrive_fort.html" class="w-full">
-                    <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/rename.png" alt="">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
-                        <div class="text-center">
-                            <p class="text-white text-xl">MY_HUNTER</p>
-                            <p class="text-white font-extralight">Un autre projet en CSFML</p>
+                    </a>
+                </div>
+                <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
+                    <a href="ca_arrive_fort.html" class="w-full">
+                        <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/rename.png" alt="">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
+                            <div class="text-center">
+                                <p class="text-white text-xl">MY_HUNTER</p>
+                                <p class="text-white font-extralight">Un autre projet en CSFML</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
-                <a href="ca_arrive_fort.html" class="w-full">
-                    <img class="w-auto h-[250px] max-sm:h-[150px] rounded-2xl transition-all duration-150 ease-in-out" src="media/sokoban.png" alt="">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
-                        <div class="text-center">
-                            <p class="text-white text-xl">MY SOKOBAN</p>
-                            <p class="text-white font-extralight">Adaptation du jeu du Sokoban dans un terminal</p>
+                    </a>
+                </div>
+                <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
+                    <a href="ca_arrive_fort.html" class="w-full">
+                        <img class="w-auto h-[250px] max-sm:h-[150px] rounded-2xl transition-all duration-150 ease-in-out" src="media/sokoban.png" alt="">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
+                            <div class="text-center">
+                                <p class="text-white text-xl">MY SOKOBAN</p>
+                                <p class="text-white font-extralight">Adaptation du jeu du Sokoban dans un terminal</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
-                <a href="ca_arrive_fort.html" class="w-full">
-                    <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/site.png" alt="">
-                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
-                        <div class="text-center">
-                            <p class="text-white text-xl">PORTFOLIO</p>
-                            <p class="text-white font-extralight">Le site sur lequel vous êtes actuellement !</p>
+                    </a>
+                </div>
+                <div class="bg-white rounded-2xl shadow-xl transition-all ease-in-out duration-150 hover:scale-105 hover:shadow-2xl max-sm:mx-6 relative group">
+                    <a href="ca_arrive_fort.html" class="w-full">
+                        <img class="w-auto h-[250px] rounded-2xl max-sm:h-[150px] transition-all duration-150 ease-in-out" src="media/site.png" alt="">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-150 ease-in-out rounded-2xl"></div>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150 ease-in-out">
+                            <div class="text-center">
+                                <p class="text-white text-xl">PORTFOLIO</p>
+                                <p class="text-white font-extralight">Le site sur lequel vous êtes actuellement !</p>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <section id="Offre" class="fade-in-section mt-24">
+        <div class="flex flex-row p-4 justify-center mb-10">
+            <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">« </h1>
+            <h1 class="text-center uppercase text-5xl max-sm:hidden">Travaillons ensemble !</h1>
+            <h1 class="text-center uppercase text-5xl hidden max-sm:text-4xl max-sm:flex">Mon Offre</h1>
+            <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl"> »</h1>
+        </div>
+    
+        <div class="w-[70%] m-auto mb-10">
+            <p class="text-center text-2xl">Je peux dès à présent vous aidez à bâtir un site web moderne et personnalisé, à l'image de votre entreprise ou de votre activité, afin de mettre votre service/produits en lumière et avoir une meilleure présence en ligne.</p>
+        </div>
+    
+        <div class="flex flex-wrap justify-center gap-14 max-sm:flex-col max-sm:items-center max-sm:mb-20">
+            <div class="w-[20rem] flex flex-col items-center border border-zinc-300 shadow-xl rounded-2xl px-4 py-6 transtion ease-in-out duration-300 hover:shadow-2xl">
+                <p class="text-2xl bg-blue-300 px-[17px] py-[8px] rounded-full mb-2 font-bold text-white">1</p>
+                <p class="text-3xl font-normal mb-7 text-center">Conception</p>
+                <p class="text-lg text-center font-light">Organisons un rdv pour discuter de vos projets, vos objectifs, votre clientèle et de pleins d'autres sujets afin que je puisse comprendre comment attirer le plus de clientèle sur votre site et vous aidez le mieux possible.</p>
+            </div>
+            <div class="w-[20rem] flex flex-col items-center border border-zinc-300 shadow-xl rounded-2xl px-4 py-6 hover:shadow-2xl">
+                <p class="text-2xl bg-blue-300 px-[17px] py-[8px] rounded-full mb-2 font-bold text-white">2</p>
+                <p class="text-3xl font-normal mb-7 text-center">Production</p>
+                <p class="text-lg text-center font-light">Une fois que que tout les objectifs sont clairs je commencerais la création de votre site web en tachant de rester à votre disponibilité à tout moments si vous souhaitez rajouter de nouvelles idées ou si vous souhaitez voir l'avancé du projet</p>
+            </div>
+            <div class="w-[20rem] flex flex-col items-center border border-zinc-300 shadow-xl rounded-2xl px-4 py-6 hover:shadow-2xl">
+                <p class="text-2xl bg-blue-300 px-[17px] py-[8px] rounded-full mb-2 font-bold text-white">3</p>
+                <p class="text-3xl font-normal mb-7 text-center">Livraison</p>
+                <p class="text-lg text-center font-light">Une fois le site terminé, je vous le livre et vous accompagne dans la prise en main de votre site. Tout cela en vous assurant d'être contactable au maximum 2 mois après la fin du projet pour répondre à toutes vos questions</p>
+            </div>
+        </div>
+    </section>
     
 
-    <div id="Contact" class="w-full p-20 max-lg:p-4">
+    <div id="Contact" class="fade-in-section w-full p-20 max-lg:p-4">
         <div class="flex flex-row gap-5 items-center justify-center mb-5">
             <h1 class="text-center text-5xl text-blue-200 max-sm:text-4xl">«</h1>
             <h1 class="text-center text-5xl uppercase max-sm:text-4xl">Contactez-moi</h1>
@@ -398,6 +430,29 @@
             });
         });
     </script>
+
+<script>
+    const faders = document.querySelectorAll('.fade-in-section');
+  
+    const appearOptions = {
+      threshold: 0.15, // Ajusté pour déclencher l'animation un peu plus tôt
+      rootMargin: "0px"
+    };
+  
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        } else {
+          entry.target.classList.remove('is-visible');
+        }
+      });
+    }, appearOptions);
+  
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
 
 </body>
 </html>
