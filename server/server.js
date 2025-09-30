@@ -6,7 +6,13 @@ const contactRoutes = require("./routes/contact.routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+const corsOptions = {
+    origin: "https://portfoliomatteospringmann-matteospringmanns-projects.vercel.app/",
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use("/api/contact", contactRoutes);
