@@ -1,6 +1,11 @@
 import React from "react";
 import { useFadeIn } from "../hooks/useFadeIn";
 import SectionTitle from "./SectionTitle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faBriefcase,
+    faGraduationCap,
+} from "@fortawesome/free-solid-svg-icons";
 
 // Icônes pour différencier les types d'événements
 const WorkIcon = () => <i className="fa-solid fa-briefcase text-white"></i>;

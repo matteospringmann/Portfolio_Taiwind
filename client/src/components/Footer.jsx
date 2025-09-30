@@ -1,4 +1,10 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faLinkedin,
+    faGithub,
+    faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -31,16 +37,13 @@ const Footer = () => {
                 </div>
 
                 <div className="mt-16 flex justify-center space-x-8">
-                    {socialLinks.map((item) => (
-                        <a
-                            key={item.name}
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-gray-600 hover:text-gray-900 transition-all duration-300 transform hover:scale-125"
-                        >
-                            <span className="sr-only">{item.name}</span>
-                            <i className={`${item.icon} text-2xl`}></i>
+                    {socialLinks.map((link) => (
+                        <a key={link.name} /* ... */>
+                            <span className="sr-only">{link.name}</span>
+                            <FontAwesomeIcon
+                                icon={link.icon}
+                                className="text-2xl"
+                            />
                         </a>
                     ))}
                 </div>

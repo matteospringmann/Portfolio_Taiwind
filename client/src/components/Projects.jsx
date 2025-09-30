@@ -5,6 +5,8 @@ import rpgImg from "../assets/images/rpg.png";
 import renameImg from "../assets/images/rename.png";
 import sokobanImg from "../assets/images/sokoban.png";
 import siteImg from "../assets/images/site.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const projectsData = [
     {

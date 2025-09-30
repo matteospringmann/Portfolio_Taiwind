@@ -1,6 +1,25 @@
 import React from "react";
 import { useFadeIn } from "../hooks/useFadeIn";
 import SectionTitle from "./SectionTitle";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faC,
+    faCode,
+    faInfinity,
+    faLambda,
+    faPlusMinus,
+    faTerminal,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+    faCss3Alt,
+    faGitAlt,
+    faHtml5,
+    faJs,
+    faLinux,
+    faNodeJs,
+    faPython,
+    faReact,
+} from "@fortawesome/free-brands-svg-icons";
 
 const skillsData = [
     {
