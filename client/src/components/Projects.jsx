@@ -2,48 +2,58 @@ import React from "react";
 import { useFadeIn } from "../hooks/useFadeIn";
 import SectionTitle from "./SectionTitle";
 import rpgImg from "../assets/images/rpg.png";
-import renameImg from "../assets/images/rename.png";
+import epiTrelloImg from "../assets/images/EpiTrello.png";
 import sokobanImg from "../assets/images/sokoban.png";
-import siteImg from "../assets/images/Portfolio.png";
+import portfolioImg from "../assets/images/Portfolio.png";
+import jebIncubatorImg from "../assets/images/Jeb_Incubator.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const projectsData = [
   {
     href: "#",
-    githubLink: "https://github.com/votre-pseudo/votre-repo-portfolio",
-    imgSrc: siteImg,
+    githubLink:
+      "https://github.com/EpitechPGE3-2025/G-PRO-500-STG-5-1-professionalwork-20",
+    imgSrc: epiTrelloImg,
+    title: "EpiTrello - Plateforme Collaborative",
+    description:
+      "Une réplique de Trello avec gestion de projets en drag & drop et collaboration en temps réel. Inclut une API RESTful, une base de données et un déploiement conteneurisé.",
+    tags: ["React", "Node.js", "PostgreSQL", "Prisma", "Docker"],
+  },
+  {
+    href: "#",
+    githubLink: "https://github.com/matteospringmann/Portfolio_Taiwind",
+    imgSrc: portfolioImg,
     title: "Portfolio Professionnel",
     description:
-      "Ce site ! Une Single-Page Application construite avec React et Vite, stylisée avec Tailwind CSS. Le formulaire de contact est géré par un backend dédié en Node.js et Express.",
+      "Ce site ! Une Single-Page Application construite avec React, stylisée avec Tailwind CSS et un backend Node.js pour le formulaire de contact.",
     tags: ["React", "TailwindCSS", "Node.js", "Vite"],
   },
   {
     href: "#",
-    githubLink: "#", // Ajoutez le lien GitHub ici
+    githubLink: "#",
+    imgSrc: jebIncubatorImg,
+    title: "JEB Incubator Showcase",
+    description:
+      "Plateforme web full-stack pour un incubateur de startups. Le projet inclut des dashboards admin/startup, un catalogue de projets, et une migration de données depuis une API existante vers une nouvelle base de données PostgreSQL.",
+    tags: [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Docker",
+      "API Migration",
+      "CI/CD",
+    ],
+  },
+  {
+    href: "#",
+    githubLink:
+      "https://github.com/EpitechPromo2028/B-MUL-200-STG-2-1-myrpg-paul.bast",
     imgSrc: rpgImg,
     title: "SAVERNE_RPG",
     description:
-      "Un jeu de rôle 2D développé en C avec la librairie graphique CSFML. Le projet inclut la gestion des animations, les collisions, et un système de quêtes simple.",
+      "Jeu de rôle 2D en C avec la librairie CSFML, incluant animations, collisions et un système de quêtes simple.",
     tags: ["C", "CSFML", "Jeu 2D"],
-  },
-  {
-    href: "#",
-    githubLink: "#", // Ajoutez le lien GitHub ici
-    imgSrc: renameImg,
-    title: "MY_HUNTER",
-    description:
-      "Une recréation du jeu d'arcade classique Duck Hunt. Ce projet m'a permis de me familiariser avec la gestion des sprites, des événements utilisateur et de la logique de jeu.",
-    tags: ["C", "CSFML", "Jeu"],
-  },
-  {
-    href: "#",
-    githubLink: "#", // Ajoutez le lien GitHub ici
-    imgSrc: sokobanImg,
-    title: "MY SOKOBAN",
-    description:
-      "Une adaptation du célèbre jeu de puzzle Sokoban, entièrement jouable dans un terminal. Ce projet a renforcé mes compétences en algorithmique et en gestion de la mémoire en C.",
-    tags: ["C", "Ncurses", "Algorithmique"],
   },
 ];
 
@@ -123,6 +133,28 @@ const Projects = () => {
             );
           })}
         </div>
+
+        {/* --- DÉBUT DU NOUVEAU BLOC GITHUB --- */}
+        <div className="mt-24 text-center">
+          <h3 className="text-2xl font-bold tracking-tight text-gray-900">
+            Et ce n'est pas tout !
+          </h3>
+          <p className="mt-4 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
+            Ce portfolio ne présente qu'une sélection de mes travaux. Pour
+            découvrir l'ensemble de mes projets, contributions et
+            expérimentations, je vous invite à visiter ma page GitHub.
+          </p>
+          <a
+            href="https://github.com/matteospringmann" // IMPORTANT: Vérifiez que c'est le bon lien
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-3 rounded-full bg-gray-900 px-6 py-3 text-base font-semibold text-white shadow-lg hover:bg-gray-700 transition-all transform hover:scale-105"
+          >
+            <FontAwesomeIcon icon={faGithub} className="h-5 w-5" />
+            Visiter mon GitHub
+          </a>
+        </div>
+        {/* --- FIN DU NOUVEAU BLOC GITHUB --- */}
       </div>
     </section>
   );
