@@ -95,7 +95,7 @@ const Contact = () => {
     <section
       id="Contact"
       ref={ref}
-      className={`fade-in-section ${isVisible ? "is-visible" : ""} py-24 sm:py-32 bg-gray-50`}
+      className={`fade-in-section ${isVisible ? "is-visible" : ""} py-24 sm:py-28 bg-white`}
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <SectionTitle title="Contact" subtitle="Entrons en contact" />
