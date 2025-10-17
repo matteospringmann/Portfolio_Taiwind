@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import { useFadeIn } from "../hooks/useFadeIn";
 import profilePic from "../assets/images/profil_picture.jpg";
 import SectionTitle from "./SectionTitle";
 
+// Ce sous-composant reste le même, il est parfait pour afficher les messages
 const StatusAlert = ({ status, message }) => {
   if (status === "idle" || status === "sending") return null;
 
@@ -50,15 +52,10 @@ const StatusAlert = ({ status, message }) => {
 
 const Contact = () => {
   const [ref, isVisible] = useFadeIn();
-  const [formData, setFormData] = useState({
-    firstname: "",
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-  const [status, setStatus] = useState("idle");
+  const form = useRef(); // Crée une référence pour le formulaire
+  const [status, setStatus] = useState("idle"); // idle, sending, success, error
 
+  // Fait disparaître le message de statut après 4 secondes
   useEffect(() => {
     if (status === "success" || status === "error") {
       const timer = setTimeout(() => {
@@ -68,221 +65,186 @@ const Contact = () => {
     }
   }, [status]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
+  // La nouvelle fonction pour envoyer l'email avec EmailJS
+  const sendEmail = (e) => {
     e.preventDefault();
     setStatus("sending");
 
-    try {
-      const apiUrl = import.meta.env.VITE_API_URL;
-      const response = await fetch(`${apiUrl}/api/contact/send`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: `${formData.firstname} ${formData.name}`,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-        }),
-      });
+    // Utilise les variables d'environnement de Vite
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-      if (response.ok) {
+    emailjs.sendForm(serviceID, templateID, form.current, publicKey).then(
+      (result) => {
+        console.log("EmailJS Success:", result.text);
         setStatus("success");
-        setFormData({
-          firstname: "",
-          name: "",
-          email: "",
-          phone: "",
-          message: "",
-        });
-      } else {
+        e.target.reset(); // Réinitialise le formulaire après envoi réussi
+      },
+      (error) => {
+        console.error("EmailJS Error:", error.text);
         setStatus("error");
-      }
-    } catch (error) {
-      console.error("Erreur:", error);
-      setStatus("error");
-    }
+      },
+    );
   };
 
   const inputStyle =
-    "w-full p-3 bg-zinc-100 rounded-lg border border-zinc-300 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
+    "w-full p-3 bg-gray-100 rounded-lg border border-gray-300 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
 
   return (
     <section
       id="Contact"
       ref={ref}
-      className={`fade-in-section ${isVisible ? "is-visible" : ""} w-full p-20 max-lg:p-4`}
+      className={`fade-in-section ${isVisible ? "is-visible" : ""} py-24 sm:py-32 bg-gray-50`}
     >
-      <div className="flex flex-row gap-5 items-center justify-center mb-10 max-lg:mb-5">
-        <SectionTitle
-          title="Portfolio"
-          subtitle="Quelques-uns de mes projets"
-        />
-      </div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <SectionTitle title="Contact" subtitle="Entrons en contact" />
 
-      <div className="flex gap-20 m-auto items-start w-[80%] max-lg:w-full max-lg:gap-10 max-lg:flex-col max-lg:mb-16">
-        <div className="flex flex-col justify-start gap-10 w-[50%] mt-10 mx-auto max-sm:w-[80%] max-lg:text-center max-lg:order-1">
-          <h1 className="text-3xl font-bold">Restons en contact !</h1>
-          <p className="text-lg text-gray-600">
-            Vous avez une question, une opportunité ou simplement envie de
-            discuter ? N'hésitez pas à m'envoyer un message. Je vous répondrai
-            dans les meilleurs délais.
-          </p>
-          <a
-            href="mailto:matteo.springmann@epitech.eu"
-            className="text-blue-600 font-semibold mb-0 hover:text-blue-800 text-lg"
-          >
-            matteo.springmann@epitech.eu
-          </a>
-          <div className="flex flex-row pt-12 border-t border-zinc-200">
-            <img
-              className="w-14 h-14 rounded-full object-cover"
-              src={profilePic}
-              alt="Mattéo Springmann"
-            />
-            <div className="ml-4 text-left">
-              <h1 className="font-bold text-lg">Mattéo Springmann</h1>
-              <p className="text-sm text-gray-500">
-                Étudiant à Epitech Strasbourg
-              </p>
+        <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+          {/* Colonne de gauche avec le texte d'information */}
+          <div className="flex flex-col gap-8">
+            <h3 className="text-2xl font-bold text-gray-900">
+              Une idée, un projet ?
+            </h3>
+            <p className="text-lg text-gray-600">
+              Je suis toujours ouvert à de nouvelles opportunités et
+              collaborations. Que vous ayez une question, une proposition de
+              projet ou simplement envie de discuter, n'hésitez pas à m'envoyer
+              un message.
+            </p>
+            <div className="flex items-center gap-4 pt-6 border-t border-gray-200">
+              <img
+                className="w-16 h-16 rounded-full object-cover"
+                src={profilePic}
+                alt="Mattéo Springmann"
+              />
+              <div>
+                <h4 className="font-semibold text-gray-800">
+                  Mattéo Springmann
+                </h4>
+                <a
+                  href="mailto:matteo.springmann@epitech.eu"
+                  className="text-blue-600 hover:underline"
+                >
+                  matteo.springmann@epitech.eu
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="w-[50%] m-auto flex flex-col gap-5 mt-10 max-lg:order-2 max-lg:w-[80%]">
-          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-            <div className="flex flex-row gap-5 max-lg:flex-col max-lg:gap-5">
-              <div className="flex flex-col gap-2 w-full">
-                <label
-                  htmlFor="firstname"
-                  className="text-sm font-semibold text-gray-700"
-                >
-                  Prénom
-                </label>
-                <input
-                  type="text"
-                  id="firstname"
-                  name="firstname"
-                  value={formData.firstname}
-                  onChange={handleChange}
-                  required
-                  className={inputStyle}
-                />
-              </div>
-              <div className="flex flex-col gap-2 w-full">
+          {/* Colonne de droite avec le formulaire */}
+          <div>
+            <form
+              ref={form}
+              onSubmit={sendEmail}
+              className="flex flex-col gap-5"
+            >
+              <div className="flex flex-col gap-2">
                 <label
                   htmlFor="name"
                   className="text-sm font-semibold text-gray-700"
                 >
-                  Nom
+                  Nom Complet
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  value={formData.name}
-                  onChange={handleChange}
                   required
                   className={inputStyle}
+                  placeholder="Votre nom"
                 />
               </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="email"
-                className="text-sm font-semibold text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className={inputStyle}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="phone"
-                className="text-sm font-semibold text-gray-700"
-              >
-                Téléphone (Optionnel)
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className={inputStyle}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="message"
-                className="text-sm font-semibold text-gray-700"
-              >
-                Message
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows="5"
-                className={`${inputStyle} resize-none`}
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="w-full flex justify-center items-center gap-3 p-3 bg-blue-500 text-white font-bold rounded-lg transition-all ease-in-out duration-300 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
-            >
-              {status === "sending" && (
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="email"
+                  className="text-sm font-semibold text-gray-700"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              )}
-              {status === "sending"
-                ? "Envoi en cours..."
-                : "Envoyer mon message"}
-            </button>
+                  Adresse Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className={inputStyle}
+                  placeholder="vous@exemple.com"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="phone"
+                  className="text-sm font-semibold text-gray-700"
+                >
+                  Téléphone (Optionnel)
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  className={inputStyle}
+                  placeholder="Votre numéro"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="message"
+                  className="text-sm font-semibold text-gray-700"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows="5"
+                  className={`${inputStyle} resize-none`}
+                  placeholder="Bonjour Mattéo,..."
+                ></textarea>
+              </div>
 
-            <StatusAlert
-              status={status}
-              message={
-                status === "success"
-                  ? "Message envoyé avec succès !"
-                  : "Une erreur est survenue. Veuillez réessayer."
-              }
-            />
-          </form>
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="w-full flex justify-center items-center gap-3 p-3 bg-blue-600 text-white font-bold rounded-lg transition-all ease-in-out duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {status === "sending" && (
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                )}
+                {status === "sending"
+                  ? "Envoi en cours..."
+                  : "Envoyer mon message"}
+              </button>
+
+              <StatusAlert
+                status={status}
+                message={
+                  status === "success"
+                    ? "Merci ! Votre message a bien été envoyé."
+                    : "Une erreur est survenue. Veuillez réessayer."
+                }
+              />
+            </form>
+          </div>
         </div>
       </div>
     </section>
