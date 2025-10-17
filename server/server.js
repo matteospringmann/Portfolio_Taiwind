@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 5000;
 
 // IMPORTANT : Remplacez l'URL ci-dessous par l'URL exacte de votre site déployé sur Vercel.
 // Assurez-vous qu'il n'y a PAS de barre oblique (/) à la fin.
-const allowedOrigins = ["https://portfolio-taiwind-client.vercel.app"];
+const allowedOrigins = ["https://portfoliomatteospringmann.vercel.app/"];
 
 const corsOptions = {
   origin: (origin, callback) => {
