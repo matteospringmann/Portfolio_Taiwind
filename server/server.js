@@ -33,6 +33,8 @@ app.use(cors(corsOptions));
 // Middlewares pour parser le JSON des requêtes
 app.use(express.json());
 
+app.get("/favicon.ico", (req, res) => res.status(204).send());
+
 // Utilisation des routes pour le formulaire de contact
 app.use("/api/contact", contactRoutes);
 
