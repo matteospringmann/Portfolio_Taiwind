@@ -8,29 +8,15 @@ const PORT = process.env.PORT || 5000;
 
 // --- CONFIGURATION CORS CORRIGÉE ---
 
-// IMPORTANT : Remplacez l'URL ci-dessous par l'URL exacte de votre site déployé sur Vercel.
-// Assurez-vous qu'il n'y a PAS de barre oblique (/) à la fin.
-const allowedOrigins = ["https://portfoliomatteospringmann.vercel.app/"];
+const vercelFrontendUrl = "https://portfoliomatteospringmann.vercel.app/";
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // --- LIGNE DE DÉBOGAGE AJOUTÉE ---
-    console.log("Requête reçue de l'origine :", origin);
-    // --- FIN DE L'AJOUT ---
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Accès non autorisé par la politique CORS"));
-    }
-  },
-};
-
-// Applique la configuration CORS à toutes les routes.
-// Le middleware `cors` gère automatiquement les requêtes OPTIONS (preflight).
 app.use(cors(corsOptions));
 
-// --- FIN DE LA CORRECTION ---
+app.use(
+  cors({
+    origin: vercelFrontendUrl,
+  }),
+);
 
 // Middlewares pour parser le JSON des requêtes
 app.use(express.json());
