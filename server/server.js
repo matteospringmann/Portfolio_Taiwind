@@ -13,9 +13,11 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = ["https://portfoliomatteospringmann.vercel.app/"];
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Cette logique autorise les requêtes venant de votre site Vercel
-    // ainsi que les requêtes qui n'ont pas d'origine (comme les outils de test type Postman).
+  origin: function (origin, callback) {
+    // --- LIGNE DE DÉBOGAGE AJOUTÉE ---
+    console.log("Requête reçue de l'origine :", origin);
+    // --- FIN DE L'AJOUT ---
+
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
