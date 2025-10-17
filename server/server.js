@@ -6,29 +6,37 @@ const contactRoutes = require("./routes/contact.routes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ["https://portfoliomatteospringmann.vercel.app/"];
+// --- CONFIGURATION CORS CORRIGÉE ---
+
+// IMPORTANT : Remplacez l'URL ci-dessous par l'URL exacte de votre site déployé sur Vercel.
+// Assurez-vous qu'il n'y a PAS de barre oblique (/) à la fin.
+const allowedOrigins = ["https://portfolio-taiwind-client.vercel.app"];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            const msg =
-                "The CORS policy for this site does not allow access from the specified Origin.";
-            return callback(new Error(msg), false);
-        }
-        return callback(null, true);
-    },
-    optionsSuccessStatus: 200,
-    credentials: true,
+  origin: (origin, callback) => {
+    // Cette logique autorise les requêtes venant de votre site Vercel
+    // ainsi que les requêtes qui n'ont pas d'origine (comme les outils de test type Postman).
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Accès non autorisé par la politique CORS"));
+    }
+  },
 };
 
+// Applique la configuration CORS à toutes les routes.
+// Le middleware `cors` gère automatiquement les requêtes OPTIONS (preflight).
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
+// --- FIN DE LA CORRECTION ---
+
+// Middlewares pour parser le JSON des requêtes
 app.use(express.json());
 
+// Utilisation des routes pour le formulaire de contact
 app.use("/api/contact", contactRoutes);
 
+// Démarrage du serveur
 app.listen(PORT, () => {
-    console.log(`Le serveur est démarré sur le port ${PORT}`);
+  console.log(`Le serveur est démarré sur le port ${PORT}`);
 });
