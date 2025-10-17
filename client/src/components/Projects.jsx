@@ -31,22 +31,6 @@ const projectsData = [
   },
   {
     href: "#",
-    githubLink: "#",
-    imgSrc: jebIncubatorImg,
-    title: "JEB Incubator Showcase",
-    description:
-      "Plateforme web full-stack pour un incubateur de startups. Le projet inclut des dashboards admin/startup, un catalogue de projets, et une migration de données depuis une API existante vers une nouvelle base de données PostgreSQL.",
-    tags: [
-      "React",
-      "Node.js",
-      "PostgreSQL",
-      "Docker",
-      "API Migration",
-      "CI/CD",
-    ],
-  },
-  {
-    href: "#",
     githubLink:
       "https://github.com/EpitechPromo2028/B-MUL-200-STG-2-1-myrpg-paul.bast",
     imgSrc: rpgImg,
