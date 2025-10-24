@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Page d'accueil principale -->
   <url>
-    <loc>https://portfolio-taiwind-client.vercel.app/</loc>
+    <!--
+      IMPORTANT : Remplacez cette URL par l'URL complète et exacte de votre portfolio.
+      Copiez-la depuis la barre d'adresse de votre navigateur.
+    -->
+    <loc>https://portfoliomatteospringmann.vercel.app/</loc>
+
+    <!--
+      Date de la dernière modification. Mettez la date du jour au format AAAA-MM-JJ.
+      Vous pouvez la mettre à jour quand vous faites des changements importants.
+    -->
     <lastmod>2025-10-24</lastmod>
+
+    <!--
+      Priorité de la page. Pour un site d'une seule page, 1.0 est parfait.
+    -->
     <priority>1.00</priority>
   </url>
+
 </urlset>
