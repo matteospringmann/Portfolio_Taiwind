@@ -4,7 +4,7 @@
   <!-- Page d'accueil principale -->
   <url>
     <!--
-      IMPORTANT : Remplacez cette URL par l'URL complète et exacte de votre portfolio.
+      IMPORTANT : Remplacez cette URL par l'URL complète et exacte de votre portfolio.fd
       Copiez-la depuis la barre d'adresse de votre navigateur.
     -->
     <loc>https://portfoliomatteospringmann.vercel.app/</loc>
