@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens.
+ * Radius rule: interactive controls are full pills, surfaces use --radius-panel (28px),
+ * nested surfaces use --radius-inner (14px). Nothing else.
+ * Z-index scale lives in src/lib/layers.ts.
+ */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-ink: #0a0a0b;
+  --color-ink-2: #141416;
+  --color-ink-3: #1d1d20;
+  --color-paper: #fbfbfd;
+  --color-paper-2: #f2f2f5;
+  --color-paper-3: #e8e8ed;
+  --color-fg: #1d1d1f;
+  --color-fg-muted: #5f5f66;
+  --color-fg-inverse: #f5f5f7;
+  --color-fg-inverse-muted: #a1a1a8;
+  --color-accent: #2557f2;
+  --color-accent-soft: #e9efff;
+  --color-accent-bright: #7a9bff;
+  --color-danger: #c4291c;
+  --color-success: #13804b;
+
+  --radius-panel: 28px;
+  --radius-inner: 14px;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-marquee: marquee 38s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 4.5rem;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 28%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  [data-theme="dark"] :focus-visible {
+    outline-color: var(--color-accent-bright);
+  }
+
+  button,
+  [role="button"],
+  a {
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  /* Display type: tracking tightens as size grows (apple-design §15). */
+  .type-display {
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  .type-title {
+    font-weight: 600;
+    letter-spacing: -0.032em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  .type-heading {
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+  }
+  .type-body {
+    letter-spacing: -0.005em;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  /* Pressable feedback, instant on press (apple-design §1). */
+  .pressable {
+    transition: transform 160ms var(--ease-out);
+  }
+  .pressable:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+
+  /* Frosted material, web approximation (not Apple's Liquid Glass). */
+  .glass-light {
+    background: rgb(251 251 253 / 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+  .glass-dark {
+    background: rgb(20 20 22 / 0.68);
+    backdrop-filter: blur(20px) saturate(160%);
+  }
+
+  .checkerboard {
+    background-color: #ffffff;
+    background-image:
+      linear-gradient(45deg, #e9e9ee 25%, transparent 25%),
+      linear-gradient(-45deg, #e9e9ee 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #e9e9ee 75%),
+      linear-gradient(-45deg, transparent 75%, #e9e9ee 75%);
+    background-size: 16px 16px;
+    background-position:
+      0 0,
+      0 8px,
+      8px -8px,
+      -8px 0;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-light {
+    background: var(--color-paper);
+    backdrop-filter: none;
+  }
+  .glass-dark {
+    background: var(--color-ink-2);
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass-light {
+    background: var(--color-paper);
+    border-color: var(--color-fg) !important;
+  }
+  .glass-dark {
+    background: var(--color-ink);
+    border-color: var(--color-fg-inverse) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
