@@ -87,89 +87,93 @@ export function GlassNav() {
 
   return (
     <>
-      <header
-        className={`fixed inset-x-0 top-0 border-b transition-[background-color,border-color,color] duration-300 ${
-          dark ? "glass-dark border-white/[0.08] text-fg-inverse" : "glass-light border-black/[0.06] text-fg"
-        }`}
-        style={{ zIndex: layers.nav }}
-      >
-        <nav aria-label="Navigation principale" className="mx-auto flex h-[52px] max-w-[1240px] items-center justify-between px-5 sm:px-8">
-          <a
-            href="#accueil"
-            onClick={(e) => {
-              e.preventDefault();
-              go("accueil");
-            }}
-            className="text-[15px] font-semibold tracking-[-0.02em]"
-          >
-            {site.name}
-          </a>
-
-          <ul className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <li key={link.id}>
-                <a
-                  href={`#${link.id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    go(link.id);
-                  }}
-                  aria-current={active === link.id ? "true" : undefined}
-                  className={`relative rounded-full px-3 py-1.5 text-[13px] transition-opacity duration-200 ${
-                    active === link.id ? "opacity-100" : "opacity-65 hover:opacity-100"
-                  }`}
-                >
-                  {active === link.id && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      transition={{ type: "spring", bounce: 0, duration: 0.35 }}
-                      className={`absolute inset-0 rounded-full ${dark ? "bg-white/10" : "bg-black/[0.05]"}`}
-                    />
-                  )}
-                  <span className="relative">{link.label}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setCommandOpen(true)}
-              className={`pressable hidden h-8 items-center gap-1.5 rounded-full px-3 text-[12px] lg:inline-flex ${
-                dark ? "bg-white/10 text-fg-inverse/80" : "bg-black/[0.05] text-fg/70"
-              }`}
-              aria-label="Ouvrir la palette de commandes"
-            >
-              <CommandIcon size={13} weight="bold" />K
-            </button>
+      {/* Floating pill: detached from the page edges, content scrolls underneath */}
+      <header className="pointer-events-none fixed inset-x-0 top-3 px-3 sm:top-4 sm:px-6" style={{ zIndex: layers.nav }}>
+        <div
+          className={`pointer-events-auto relative mx-auto max-w-[1080px] overflow-hidden rounded-full border transition-[background-color,border-color,color,box-shadow] duration-300 ${
+            dark
+              ? "glass-dark border-white/[0.09] text-fg-inverse shadow-[0_10px_40px_-10px_rgb(0_0_0/0.6),inset_0_1px_0_rgb(255_255_255/0.08)]"
+              : "glass-light border-black/[0.06] text-fg shadow-[0_10px_40px_-14px_rgb(29_29_31/0.22),inset_0_1px_0_rgb(255_255_255/0.7)]"
+          }`}
+        >
+          <nav aria-label="Navigation principale" className="flex h-[52px] items-center justify-between pl-5 pr-2 sm:pl-6">
             <a
-              href="#contact"
+              href="#accueil"
               onClick={(e) => {
                 e.preventDefault();
-                go("contact");
+                go("accueil");
               }}
-              className="pressable hidden h-8 items-center rounded-full bg-accent px-4 text-[13px] font-medium text-white md:inline-flex"
+              className="text-[15px] font-semibold tracking-[-0.02em]"
             >
-              Me contacter
+              {site.name}
             </a>
-            <button
-              type="button"
-              onClick={() => setMenuOpen((o) => !o)}
-              className="pressable grid size-10 place-items-center rounded-full md:hidden"
-              aria-expanded={menuOpen}
-              aria-controls="mobile-menu"
-              aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
-            >
-              {menuOpen ? <XIcon size={22} /> : <ListIcon size={22} />}
-            </button>
-          </div>
-        </nav>
-        <motion.div
-          aria-hidden
-          className={`absolute inset-x-0 bottom-[-1px] h-[2px] origin-left ${dark ? "bg-accent-bright" : "bg-accent"}`}
-          style={{ scaleX: progress }}
-        />
+
+            <ul className="hidden items-center gap-1 md:flex">
+              {navLinks.map((link) => (
+                <li key={link.id}>
+                  <a
+                    href={`#${link.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      go(link.id);
+                    }}
+                    aria-current={active === link.id ? "true" : undefined}
+                    className={`relative rounded-full px-3 py-1.5 text-[13px] transition-opacity duration-200 ${
+                      active === link.id ? "opacity-100" : "opacity-65 hover:opacity-100"
+                    }`}
+                  >
+                    {active === link.id && (
+                      <motion.span
+                        layoutId="nav-pill"
+                        transition={{ type: "spring", bounce: 0, duration: 0.35 }}
+                        className={`absolute inset-0 rounded-full ${dark ? "bg-white/10" : "bg-black/[0.05]"}`}
+                      />
+                    )}
+                    <span className="relative">{link.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setCommandOpen(true)}
+                className={`pressable hidden h-8 items-center gap-1.5 rounded-full px-3 text-[12px] lg:inline-flex ${
+                  dark ? "bg-white/10 text-fg-inverse/80" : "bg-black/[0.05] text-fg/70"
+                }`}
+                aria-label="Ouvrir la palette de commandes"
+              >
+                <CommandIcon size={13} weight="bold" />K
+              </button>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  go("contact");
+                }}
+                className="pressable hidden h-9 items-center rounded-full bg-accent px-4 text-[13px] font-medium text-white md:inline-flex"
+              >
+                Me contacter
+              </a>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((o) => !o)}
+                className="pressable grid size-10 place-items-center rounded-full md:hidden"
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+                aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              >
+                {menuOpen ? <XIcon size={22} /> : <ListIcon size={22} />}
+              </button>
+            </div>
+          </nav>
+          <motion.div
+            aria-hidden
+            className={`absolute inset-x-8 bottom-0 h-[2px] origin-left rounded-full ${dark ? "bg-accent-bright" : "bg-accent"}`}
+            style={{ scaleX: progress }}
+          />
+        </div>
       </header>
 
       <AnimatePresence>
@@ -180,7 +184,7 @@ export function GlassNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 0.18 } }}
             transition={{ duration: 0.25 }}
-            className="glass-light fixed inset-0 flex flex-col px-6 pb-10 pt-[84px] text-fg md:hidden"
+            className="glass-light fixed inset-0 flex flex-col px-6 pb-10 pt-[96px] text-fg md:hidden"
             style={{ zIndex: layers.nav - 1 }}
           >
             <ul className="flex flex-col gap-1">

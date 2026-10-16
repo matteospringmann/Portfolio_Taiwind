@@ -41,7 +41,7 @@ export function Hero() {
 
         <motion.div
           style={reduce ? undefined : { opacity: copyOpacity, y: copyY, scale: copyScale }}
-          className="relative origin-top pt-[clamp(6.5rem,15vh,9rem)]"
+          className="relative origin-top pt-[clamp(6.5rem,14vh,8.5rem)] text-center"
         >
           <Container>
             <motion.p
@@ -52,7 +52,7 @@ export function Hero() {
             >
               {site.name}
             </motion.p>
-            <h1 className="type-display mt-3 max-w-[17ch] text-[clamp(3rem,7.4vw,6.6rem)]">
+            <h1 className="type-display mx-auto mt-3 max-w-[17ch] text-[clamp(3rem,7.4vw,6.4rem)]">
               {headline.map((word, i) => (
                 <motion.span
                   key={i}
@@ -70,13 +70,13 @@ export function Hero() {
               initial={{ opacity: 0, y: reduce ? 0 : 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: easeOut, delay: 0.5 }}
-              className="mt-6 flex flex-col gap-7 md:flex-row md:items-end md:justify-between"
+              className="mt-6 flex flex-col items-center gap-8"
             >
-              <p className="type-body max-w-[34ch] text-[17px] text-fg-inverse-muted md:text-[19px]">
+              <p className="type-body max-w-[46ch] text-[17px] text-fg-inverse-muted md:text-[20px]">
                 Développeur front-end formé à Epitech. Je conçois des sites et des outils web rapides, précis et
                 agréables à utiliser.
               </p>
-              <div className="flex gap-3">
+              <div className="flex flex-wrap justify-center gap-3">
                 <a
                   href="#projets"
                   onClick={(e) => {
