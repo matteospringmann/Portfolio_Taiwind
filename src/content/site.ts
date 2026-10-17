@@ -5,8 +5,8 @@ export const site = {
   url: "https://portfoliomatteospringmann.vercel.app",
   email: "matteo.springmann@epitech.eu",
   github: "https://github.com/matteospringmann",
-  // Renseigner l'URL du profil pour afficher le lien LinkedIn dans le footer.
-  linkedin: null as string | null,
+  // Mettre à null pour masquer le lien LinkedIn dans le footer.
+  linkedin: "https://www.linkedin.com/in/matt%C3%A9o-springmann-353536301/" as string | null,
   cv: "/cv.pdf",
   cvFileName: "matteo_springmann_cv.pdf",
   photo: "/profil.jpg",
