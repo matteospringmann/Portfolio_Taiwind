@@ -11,10 +11,10 @@ const code = `type Projet = {
   enLigne: boolean;
 };
 
-const pli: Projet = {
-  titre: "Pli",
-  stack: ["React Native", "Python"],
-  enLigne: false,
+const dressigo: Projet = {
+  titre: "Dressigo",
+  stack: ["React Native", "Supabase"],
+  enLigne: true,
 };`;
 
 const keywords = /\b(type|const|string|boolean|false|true)\b/g;

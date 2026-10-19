@@ -6,7 +6,7 @@ import { useRef } from "react";
 import { projects } from "@/content/projects";
 import { process, services, type Service } from "@/content/services";
 import { Reveal } from "@/components/motion/Reveal";
-import { ProjectVisual } from "@/components/mockups/ProjectVisual";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Container, Section } from "@/components/ui/Section";
 import { setProjectType } from "@/lib/contact-intent";
 import { useScrollTo } from "@/lib/use-scroll-to";
@@ -53,7 +53,7 @@ function Offer({ service, featured, delay }: { service: Service; featured?: bool
         {featured && (
           <div className="pointer-events-none relative -mb-24 mt-10 w-[115%] self-start sm:-mb-32 lg:mt-auto lg:pt-10" aria-hidden>
             <div className="rotate-[-3deg] opacity-95">
-              <ProjectVisual project={projects.find((p) => p.slug === "sapin-blanc")!} live={false} />
+              <ProjectVisual project={projects.find((p) => p.slug === "web-relive")!} sizes="(min-width: 1024px) 40vw, 90vw" />
             </div>
           </div>
         )}

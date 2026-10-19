@@ -7,24 +7,23 @@ import { Tile } from "./Tile";
 
 const sessions = {
   "Node.js": {
-    command: "curl localhost:3000/api/projets?statut=demo",
+    command: "curl localhost:3000/api/projets?enLigne=true",
     output: [
       "HTTP/1.1 200 OK",
       "[",
-      '  { "titre": "Citable", "type": "extension" },',
-      '  { "titre": "Atelier Moka", "type": "e-commerce" },',
-      '  { "titre": "Palmarès", "type": "saas" }',
+      '  { "titre": "Dressigo", "type": "app" },',
+      '  { "titre": "Lumi GEO", "type": "extension" },',
+      '  { "titre": "MethodoSkills", "type": "e-commerce" }',
       "]",
     ],
   },
   Python: {
-    command: "python classement.py --store ios --pays fr",
+    command: "python detourage.py veste.jpg --decor marbre",
     output: [
-      "Collecte de 200 classements...",
-      "Mouvements détectés : 37",
-      "  Royaume des Tours   +2  (1er)",
-      "  Petit Potager       +1  (3e)",
-      "Rapport enregistré : rapport.csv",
+      "Photo redressée : 2048 x 2560",
+      "Masque calculé en 0,8 s",
+      "Décor appliqué : marbre blanc, format 4:5",
+      "Rendu enregistré : veste-marbre.webp",
     ],
   },
 } as const;

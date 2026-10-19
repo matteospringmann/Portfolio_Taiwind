@@ -42,12 +42,12 @@ Tout le texte vit dans `src/content/` :
 
 Les tuiles de compétences (petits composants interactifs) sont dans `src/components/skills/`.
 
-### Remplacer une maquette par un vrai projet
+### Ajouter ou modifier un projet
 
-Dans `src/content/projects.ts`, pour le projet concerné :
+Chaque projet est une entrée de `src/content/projects.ts`. Ses captures vont dans `public/projets/<slug>/`, en WebP :
 
-1. passer `status` à `"live"` ;
-2. ajouter `links: { demo: "https://...", code: "https://github.com/..." }` ;
-3. (optionnel) ajouter `images: [{ src: "/projets/mon-projet.png", alt: "..." }]` avec l'image dans `public/projets/`. Les captures remplacent alors la maquette codée.
+- `accueil.webp` : la page d'accueil sur ordinateur, au format 16:10 (capture 1440 x 900, exportée en 2000 px de large) ;
+- `telephone.webp` : la même page sur mobile (capture 390 x 844, exportée en 780 px de large), avec en haut une bande unie de 54 px (162 px en x3) de la couleur du fond, où se placent la barre d'état et l'encoche du téléphone ;
+- d'autres captures 16:10 pour la galerie (`gallery`), chacune avec une légende.
 
-Le badge « Projet de démonstration » disparaît automatiquement.
+`device` choisit l'appareil mis en avant dans la section Projets (`"browser"` ou `"phone"`). `links.site` affiche le bouton « Voir le site » ; sans lien public, `note` explique pourquoi.

@@ -1,4 +1,4 @@
-export type MockupKey = "geo" | "coffee" | "hotel" | "cutout" | "ranking";
+export type Shot = { src: string; alt: string; caption?: string };
 
 export type Project = {
   slug: string;
@@ -6,131 +6,181 @@ export type Project = {
   category: string;
   /** Couleur propre au projet, utilisée pour teinter la scène. */
   accent: string;
-  /**
-   * "demo" : maquette codée, affichée avec le badge « Projet de démonstration ».
-   * "live" : vrai projet ; si `images` est renseigné, les captures remplacent la maquette.
-   */
-  status: "demo" | "live";
+  /** Appareil mis en avant dans la section Projets. */
   device: "browser" | "phone";
-  mockup: MockupKey;
+  /** Adresse affichée dans la barre du navigateur. */
+  url: string;
   summary: string;
   problem: string;
   solution: string;
   features: string[];
   stack: string[];
-  links?: { demo?: string; code?: string };
-  images?: { src: string; alt: string }[];
+  links?: { site?: string; store?: string };
+  /** Affiché quand il n'y a pas encore de lien public. */
+  note?: string;
+  /** Captures dans public/projets/<slug>/ : ordinateur 16:10, mobile 390x844. */
+  cover: Shot;
+  mobile: Shot;
+  /** Texte de la barre d'état du téléphone : "light" si la capture mobile a un fond sombre. */
+  statusBar?: "dark" | "light";
+  gallery: Shot[];
 };
+
+const shot = (slug: string, name: string, alt: string, caption?: string): Shot => ({
+  src: `/projets/${slug}/${name}.webp`,
+  alt,
+  caption,
+});
 
 export const projects: Project[] = [
   {
-    slug: "citable",
-    title: "Citable",
-    category: "Extension Chrome d'analyse GEO",
-    accent: "#16a37a",
-    status: "demo",
+    slug: "zalonini",
+    title: "Zalonini Coffee",
+    category: "Boutique en ligne d'un torréfacteur",
+    accent: "#b8642e",
     device: "browser",
-    mockup: "geo",
+    url: "zalonini-coffee-roasters-3.myshopify.com",
     summary:
-      "Une extension qui mesure si une page a des chances d'être reprise par ChatGPT, Perplexity ou Gemini, et explique quoi corriger.",
+      "La boutique Shopify d'un torréfacteur alsacien : un thème sur mesure, chaleureux et artisanal, fidèle à ses cafés.",
     problem:
-      "Les réponses des IA génératives remplacent une partie des recherches Google. Les éditeurs ne savent pas si leurs pages sont lisibles et citables par ces moteurs.",
+      "Bruno torréfie en petites quantités et vend surtout sur les marchés. Il voulait une boutique en ligne qui lui ressemble : authentique et humble, loin des sites de café génériques.",
     solution:
-      "En un clic, l'extension analyse la page ouverte : structure, données structurées, réponses directes, sources. Elle produit un score et une liste d'actions classées par impact.",
+      "Un thème Shopify écrit de zéro, ajusté au fil de plusieurs séries de retours du client : fiches détaillées pour chaque lot, comparateur café vert et torréfié, guide des méthodes douces.",
     features: [
-      "Score de visibilité IA sur 100, détaillé par critère",
-      "Détection des données structurées JSON-LD manquantes",
-      "Recommandations concrètes, cochables au fil des corrections",
-      "Historique des analyses par domaine",
+      "Thème Shopify sur mesure, construit en sections",
+      "Fiches café : origine, altitude, process, notes",
+      "Comparateur glissant café vert et café torréfié",
+      "Guide « Slow coffee » des méthodes d'extraction",
     ],
-    stack: ["TypeScript", "React", "Chrome Extension MV3", "Tailwind CSS"],
+    stack: ["Shopify", "Liquid", "Tailwind CSS", "Alpine.js", "Vite"],
+    note: "Boutique en cours d'ouverture : le lien public arrive bientôt.",
+    cover: shot("zalonini", "accueil", "Page d'accueil de la boutique Zalonini Coffee Roasters"),
+    mobile: shot("zalonini", "telephone", "Accueil de la boutique Zalonini sur mobile"),
+    gallery: [
+      shot("zalonini", "boutique", "Grille des cafés de la boutique Zalonini", "La boutique : un lot par origine, avec ses caractéristiques."),
+      shot("zalonini", "comparateur", "Comparateur café vert et café torréfié", "Le comparateur à faire glisser, comme sur les marchés."),
+      shot("zalonini", "signature", "Section signature avec photos du torréfacteur", "Les vraies photos du torréfacteur, mises en scène."),
+      shot("zalonini", "slow-coffee", "Guide des méthodes douces", "Le guide des méthodes douces."),
+    ],
   },
   {
-    slug: "atelier-moka",
-    title: "Atelier Moka",
-    category: "Boutique en ligne de café",
-    accent: "#e2631f",
-    status: "demo",
-    device: "browser",
-    mockup: "coffee",
-    summary:
-      "Une boutique de torréfacteur où l'on choisit son café, sa mouture et son abonnement en quelques secondes.",
-    problem:
-      "Un torréfacteur indépendant vendait surtout en boutique. Son ancien site était lent et le choix de la mouture se faisait par e-mail.",
-    solution:
-      "Une boutique rapide, centrée sur le produit : notes de dégustation, mouture choisie directement sur la fiche, panier toujours visible.",
-    features: [
-      "Sélecteur de mouture intégré à chaque produit",
-      "Panier persistant et ajout sans rechargement",
-      "Abonnement mensuel avec livraison programmée",
-      "Pages produit optimisées pour le référencement",
-    ],
-    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Stripe"],
-  },
-  {
-    slug: "sapin-blanc",
-    title: "Sapin Blanc",
-    category: "Site d'hôtel et spa",
-    accent: "#3d7fa8",
-    status: "demo",
-    device: "browser",
-    mockup: "hotel",
-    summary:
-      "Le site d'un hôtel-spa dans les Vosges, avec une réservation directe qui évite les commissions des plateformes.",
-    problem:
-      "L'hôtel dépendait des plateformes de réservation, qui prennent une commission sur chaque nuit vendue.",
-    solution:
-      "Un site qui donne envie dès la première image, avec un module de réservation clair : dates, nombre de personnes, disponibilités en direct.",
-    features: [
-      "Sélection des dates avec calcul des nuits en direct",
-      "Présentation des chambres et des soins du spa",
-      "Site bilingue, pensé d'abord pour le mobile",
-      "Formulaire de demande pour les séminaires",
-    ],
-    stack: ["Next.js", "React", "Tailwind CSS", "Motion"],
-  },
-  {
-    slug: "pli",
-    title: "Pli",
-    category: "Application mobile de détourage de vêtements",
-    accent: "#7b5cf0",
-    status: "demo",
+    slug: "dressigo",
+    title: "Dressigo",
+    category: "Application web et mobile avec IA",
+    accent: "#3d4ff5",
     device: "phone",
-    mockup: "cutout",
+    url: "dressigo.app",
     summary:
-      "Une app qui détoure un vêtement à partir d'une simple photo, pour vendre en ligne ou ranger sa garde-robe.",
+      "Une app qui transforme la photo d'un vêtement en annonce prête pour Vinted, Leboncoin ou eBay : détourage, décor propre et texte rédigé.",
     problem:
-      "Photographier un vêtement proprement demande un fond neutre, de la lumière et du temps. Les annonces bâclées se vendent moins bien.",
+      "Vendre ses vêtements d'occasion prend du temps : photos prises sur un fond chargé, annonce à réécrire pour chaque plateforme. Un article mal présenté se vend moins bien.",
     solution:
-      "On prend la photo n'importe où, l'app isole le vêtement, reconnaît son type et exporte une image propre sur fond transparent.",
+      "L'article est détouré directement dans le navigateur puis posé sur un décor au choix. Une IA rédige ensuite le titre et la description pour chaque plateforme, sans jamais inventer la marque ni la taille.",
     features: [
-      "Détourage automatique en quelques secondes",
-      "Comparaison avant/après au doigt",
-      "Reconnaissance du type de vêtement et de la couleur",
-      "Export PNG transparent ou sur fond uni",
+      "Détourage sur l'appareil, dans le navigateur (WebGPU)",
+      "Douze décors, formats carré et 4:5",
+      "Annonce Vinted, Leboncoin et eBay en quatre langues",
+      "Crédits, paiement Stripe et suivi des ventes",
     ],
-    stack: ["React Native", "Expo", "TypeScript", "Python"],
+    stack: ["React Native", "Expo", "TypeScript", "Supabase", "Stripe", "Mistral AI"],
+    links: { site: "https://dressigo.app" },
+    cover: shot("dressigo", "accueil", "Page d'accueil de Dressigo avec un comparatif avant et après détourage"),
+    mobile: shot("dressigo", "telephone", "Dressigo sur mobile : un short détouré, avant et après"),
+    gallery: [
+      shot("dressigo", "etapes", "Les trois étapes de Dressigo", "Trois temps : la photo, le décor, l'annonce."),
+      shot("dressigo", "annonce", "Exemple d'annonce générée", "L'annonce rédigée pour chaque plateforme, champ par champ."),
+      shot("dressigo", "suivi", "Suivi des ventes", "Le suivi des ventes, sans tableur."),
+    ],
   },
   {
-    slug: "palmares",
-    title: "Palmarès",
-    category: "SaaS de classement de jeux mobiles",
-    accent: "#e2386f",
-    status: "demo",
+    slug: "lumi-geo",
+    title: "Lumi GEO",
+    category: "Extension Chrome d'analyse SEO et GEO",
+    accent: "#d6452b",
     device: "browser",
-    mockup: "ranking",
+    url: "lumi-geo.pages.dev",
     summary:
-      "Un tableau de bord qui suit le classement des jeux mobiles sur les stores, heure par heure.",
+      "Une extension Chrome qui montre une page telle que la voient ChatGPT, Perplexity ou Gemini, la note sur 100 et donne le code pour corriger.",
     problem:
-      "Les studios de jeux suivent leurs positions et celles des concurrents à la main, store par store, pays par pays.",
+      "La plupart des robots IA n'exécutent pas le JavaScript. Une page parfaite dans le navigateur peut être presque vide pour eux, et ses éditeurs ne le voient pas.",
     solution:
-      "Palmarès collecte les classements, détecte les mouvements importants et les affiche dans un tableau de bord lisible en un coup d'œil.",
+      "Lumi compare la page affichée au HTML brut et vérifie les données structurées, le llms.txt et l'accès des robots IA. Elle classe ensuite les corrections par points gagnés. Tout tourne dans le navigateur : aucun serveur, aucune donnée envoyée.",
     features: [
-      "Classements gratuits, payants et revenus",
-      "Évolution sur 7 jours pour chaque jeu",
-      "Alertes quand un concurrent gagne des places",
-      "Export des données pour les équipes marketing",
+      "Note sur 100 et quatre piliers : SEO, GEO, AEO, Vue IA",
+      "Vue robot : le texte invisible sans JavaScript, surligné",
+      "Code JSON-LD prêt à copier, adapté au type de page",
+      "Aperçu Google, rapport PDF, interface bilingue",
     ],
-    stack: ["Next.js", "Node.js", "PostgreSQL", "TypeScript"],
+    stack: ["JavaScript", "Chrome Extension MV3", "Next.js", "Tailwind CSS", "Cloudflare Pages"],
+    links: {
+      site: "https://lumi-geo.pages.dev/",
+      store: "https://chromewebstore.google.com/detail/lumi-geo/nodnlpecbohjikeljkdcmkpagokdhike",
+    },
+    cover: shot("lumi-geo", "accueil", "Page d'accueil de Lumi GEO"),
+    mobile: shot("lumi-geo", "telephone", "Le site de Lumi GEO sur mobile"),
+    gallery: [
+      shot("lumi-geo", "vue-robot", "La vue robot de l'extension, zones invisibles hachurées", "La vue robot : ce que les IA ne lisent pas, hachuré sur la page."),
+      shot("lumi-geo", "note", "Le panneau de l'extension avec la note sur 100", "La note globale et ses quatre piliers."),
+      shot("lumi-geo", "code", "Le code JSON-LD généré par l'extension", "Le code à copier pour corriger."),
+      shot("lumi-geo", "etapes", "Les trois étapes d'une analyse", "Le site de présentation : trois étapes, directement dans Chrome."),
+    ],
+  },
+  {
+    slug: "methodoskills",
+    title: "MethodoSkills",
+    category: "Boutique de packs de skills pour Claude",
+    accent: "#f08a3c",
+    device: "browser",
+    url: "methodoskills-ai.app",
+    summary:
+      "Un site qui vend des packs de skills pour Claude : dix packs, 51 méthodes prêtes à installer, en français et en anglais.",
+    problem:
+      "Claude sait écrire, mais sans méthode il faut tout lui réexpliquer à chaque demande. Et la plupart des utilisateurs ne savent pas écrire leurs propres skills.",
+    solution:
+      "Des packs par besoin (clients, emploi, étudiants…) en paiement unique. Une démo montre chaque skill au travail, et la livraison est automatique : paiement Stripe, liens de téléchargement signés, e-mail de confirmation.",
+    features: [
+      "Démo interactive de chaque skill",
+      "Paiement Stripe, prix calculé côté serveur",
+      "Téléchargements par liens signés, valables 7 jours",
+      "Site bilingue, 49 tests automatisés",
+    ],
+    stack: ["JavaScript", "Tailwind CSS", "Cloudflare Pages Functions", "Stripe"],
+    links: { site: "https://methodoskills-ai.app" },
+    cover: shot("methodoskills", "accueil", "Page d'accueil de MethodoSkills"),
+    mobile: shot("methodoskills", "telephone", "MethodoSkills sur mobile"),
+    statusBar: "light",
+    gallery: [
+      shot("methodoskills", "demo", "Démo d'un skill dans une conversation avec Claude", "La démo : chaque skill au travail, de la demande au résultat."),
+      shot("methodoskills", "packs", "Choix des packs et achat", "Un pack par besoin, achat en un clic."),
+    ],
+  },
+  {
+    slug: "web-relive",
+    title: "Web Relive",
+    category: "Site vitrine d'un studio web",
+    accent: "#13836a",
+    device: "browser",
+    url: "web-relive.webrelive.workers.dev",
+    summary:
+      "Le site d'un studio web strasbourgeois qui crée sites vitrines et outils de gestion pour les commerces, les indépendants et les PME.",
+    problem:
+      "Un commerçant hésite à confier son site : il veut voir le résultat, comprendre le déroulé et savoir à qui il parle avant d'écrire.",
+    solution:
+      "Une page qui montre au lieu d'expliquer : comparateur avant et après, maquettes de sites et d'outils internes, planning type et engagements écrits. Le tout noté entre 98 et 100 sur Lighthouse.",
+    features: [
+      "Comparateur avant et après à faire glisser",
+      "Maquettes de sites et d'outils internes",
+      "Demande de devis validée et enregistrée dans Supabase",
+      "Lighthouse : 98 en performance, 100 ailleurs",
+    ],
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "Cloudflare Workers"],
+    links: { site: "https://web-relive.webrelive.workers.dev/" },
+    cover: shot("web-relive", "accueil", "Page d'accueil de Web Relive"),
+    mobile: shot("web-relive", "telephone", "Web Relive sur mobile"),
+    gallery: [
+      shot("web-relive", "avant-apres", "Comparateur avant et après d'un site de restaurant", "Le comparateur : un site de restaurant, avant et après."),
+      shot("web-relive", "offres", "Les offres du studio", "Les offres, chacune avec son aperçu."),
+      shot("web-relive", "realisations", "Les réalisations du studio", "Des maquettes réalistes comme point de départ."),
+    ],
   },
 ];

@@ -1,11 +1,11 @@
 "use client";
 
 import { ArrowRightIcon } from "@phosphor-icons/react";
-import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { projects, type Project } from "@/content/projects";
 import { Reveal } from "@/components/motion/Reveal";
-import { ProjectVisual } from "@/components/mockups/ProjectVisual";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Container, Section } from "@/components/ui/Section";
 import { easeOut } from "@/lib/motion";
 import { ProjectSheet } from "./ProjectSheet";
@@ -32,7 +32,6 @@ function ProjectText({ project, onOpen }: { project: Project; onOpen: () => void
           Découvrir le projet
           <ArrowRightIcon size={16} weight="bold" className="transition-transform duration-200 group-hover:translate-x-0.5" />
         </button>
-        {project.status === "demo" && <span className="text-[13px] text-fg-inverse-muted">Projet de démonstration</span>}
       </div>
     </div>
   );
@@ -63,7 +62,6 @@ export function Projects() {
   const [open, setOpen] = useState<Project | null>(null);
   const onActive = useCallback((i: number) => setActive(i), []);
   const close = useCallback(() => setOpen(null), []);
-  const current = projects[active];
 
   return (
     <Section id="projets" surface="ink" label="Projets">
@@ -75,8 +73,8 @@ export function Projects() {
         </Reveal>
         <Reveal delay={0.1}>
           <p className="type-body mt-6 max-w-[46ch] text-[19px] text-fg-inverse-muted">
-            Des maquettes de démonstration codées et interactives : cliquez, faites glisser, testez. Les projets
-            clients arrivent bientôt.
+            Une boutique pour un torréfacteur, une app d&apos;IA, une extension Chrome, une boutique de skills et un
+            studio web. Des projets réels : ouvrez-en un pour voir les coulisses.
           </p>
         </Reveal>
       </Container>
@@ -102,19 +100,36 @@ export function Projects() {
                   }}
                 />
               ))}
-              <div className="relative flex aspect-[880/640] items-center justify-center">
-                <AnimatePresence mode="popLayout" initial={false}>
-                  <motion.div
-                    key={current.slug}
-                    className={current.device === "phone" ? "w-[42%]" : "w-full"}
-                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 60, scale: 0.96, filter: "blur(8px)" }}
-                    animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                    exit={reduce ? { opacity: 0 } : { opacity: 0, y: -60, scale: 0.98, filter: "blur(8px)" }}
-                    transition={{ duration: 0.7, ease: easeOut }}
-                  >
-                    <ProjectVisual project={current} />
-                  </motion.div>
-                </AnimatePresence>
+              {/* All visuals stay mounted (stacked) so their screenshots are loaded before their turn comes. */}
+              <div className="relative aspect-[880/640]">
+                {projects.map((p, i) => {
+                  const offset = Math.sign(i - active);
+                  return (
+                    <motion.div
+                      key={p.slug}
+                      className="absolute inset-0 flex items-center justify-center"
+                      initial={false}
+                      animate={
+                        reduce
+                          ? { opacity: offset === 0 ? 1 : 0 }
+                          : {
+                              opacity: offset === 0 ? 1 : 0,
+                              y: offset * 60,
+                              scale: offset === 0 ? 1 : 0.96,
+                              filter: offset === 0 ? "blur(0px)" : "blur(8px)",
+                            }
+                      }
+                      transition={{ duration: 0.7, ease: easeOut }}
+                      aria-hidden={offset !== 0}
+                    >
+                      <ProjectVisual
+                        project={p}
+                        className={p.device === "phone" ? "w-[42%]" : "w-full"}
+                        sizes={p.device === "phone" ? "300px" : "(min-width: 1280px) 720px, 58vw"}
+                      />
+                    </motion.div>
+                  );
+                })}
               </div>
               <div className="relative mt-8 flex justify-center" aria-hidden>
                 {projects.map((p, i) => (
@@ -139,7 +154,11 @@ export function Projects() {
                 className="rounded-[28px] px-4 py-8 sm:px-8"
                 style={{ background: `radial-gradient(80% 70% at 50% 40%, color-mix(in oklab, ${p.accent} 30%, transparent), transparent)` }}
               >
-                <ProjectVisual project={p} className={p.device === "phone" ? "mx-auto w-[min(280px,72vw)]" : ""} />
+                <ProjectVisual
+                  project={p}
+                  className={p.device === "phone" ? "mx-auto w-[min(280px,72vw)]" : ""}
+                  sizes={p.device === "phone" ? "280px" : "(min-width: 640px) 90vw, 100vw"}
+                />
               </div>
             </Reveal>
             <Reveal className="mt-8">

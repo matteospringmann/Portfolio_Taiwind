@@ -1,12 +1,13 @@
 "use client";
 
-import { ArrowUpRightIcon, CheckCircleIcon, GithubLogoIcon, XIcon } from "@phosphor-icons/react";
+import { ArrowUpRightIcon, CheckCircleIcon, PuzzlePieceIcon, XIcon } from "@phosphor-icons/react";
 import { useLenis } from "lenis/react";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
+import Image from "next/image";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import type { Project } from "@/content/projects";
-import { ProjectVisual } from "@/components/mockups/ProjectVisual";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { layers } from "@/lib/layers";
 import { springSheet } from "@/lib/motion";
 
@@ -98,18 +99,27 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
             </div>
 
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 pb-16 sm:px-10" data-lenis-prevent>
-              {project.status === "demo" && (
-                <p className="inline-flex rounded-full bg-accent-soft px-3 py-1 text-[13px] font-medium text-accent">
-                  Projet de démonstration
-                </p>
-              )}
-              <p className="type-body mt-4 max-w-[60ch] text-[19px]">{project.summary}</p>
+              <p className="type-body max-w-[60ch] text-[19px]">{project.summary}</p>
 
+              {/* Desktop and mobile side by side: the phone overlaps the browser's corner. */}
               <div
-                className={`mt-8 rounded-[22px] p-4 sm:p-8 ${project.device === "phone" ? "flex justify-center" : ""}`}
+                className="relative mt-8 overflow-hidden rounded-[22px] px-4 pb-4 pt-4 sm:px-8 sm:pb-10 sm:pt-8"
                 style={{ background: `color-mix(in oklab, ${project.accent} 12%, #f2f2f5)` }}
               >
-                <ProjectVisual project={project} className={project.device === "phone" ? "w-[min(300px,80vw)]" : ""} />
+                <ProjectVisual
+                  project={project}
+                  device="browser"
+                  className="sm:w-[82%]"
+                  sizes="(min-width: 1000px) 760px, (min-width: 640px) 78vw, 92vw"
+                  eager
+                />
+                <ProjectVisual
+                  project={project}
+                  device="phone"
+                  className="absolute bottom-[-12%] right-[5%] hidden w-[22%] sm:block"
+                  sizes="220px"
+                  eager
+                />
               </div>
 
               <div className="mt-12 grid gap-10 md:grid-cols-2">
@@ -142,10 +152,24 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                 ))}
               </ul>
 
+              <h3 className="type-heading mt-12 text-[20px]">En images</h3>
+              <ul className="mt-4 grid gap-x-5 gap-y-8 md:grid-cols-2">
+                {project.gallery.map((g) => (
+                  <li key={g.src}>
+                    <figure>
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-[16px] bg-paper-2 shadow-[0_0_0_1px_rgb(0_0_0/0.06)]">
+                        <Image src={g.src} alt={g.alt} fill sizes="(min-width: 768px) 440px, 92vw" className="object-cover object-top" />
+                      </div>
+                      {g.caption && <figcaption className="mt-3 text-[14px] text-fg-muted">{g.caption}</figcaption>}
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+
               <div className="mt-12 flex flex-wrap items-center gap-3 border-t border-black/[0.06] pt-8">
-                {project.links?.demo && (
+                {project.links?.site && (
                   <a
-                    href={project.links.demo}
+                    href={project.links.site}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="pressable inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-[14px] font-medium text-white"
@@ -153,21 +177,17 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                     Voir le site <ArrowUpRightIcon size={15} weight="bold" />
                   </a>
                 )}
-                {project.links?.code && (
+                {project.links?.store && (
                   <a
-                    href={project.links.code}
+                    href={project.links.store}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="pressable inline-flex h-11 items-center gap-2 rounded-full bg-black/[0.06] px-5 text-[14px] font-medium"
+                    className="pressable inline-flex h-11 items-center gap-2 rounded-full bg-black/[0.06] px-5 text-[14px] font-medium hover:bg-black/10"
                   >
-                    <GithubLogoIcon size={16} /> Code source
+                    <PuzzlePieceIcon size={16} /> Chrome Web Store
                   </a>
                 )}
-                {!project.links && (
-                  <p className="text-[14px] text-fg-muted">
-                    Maquette conçue pour ce portfolio. La démo en ligne et le code seront publiés ici.
-                  </p>
-                )}
+                {project.note && <p className="text-[14px] text-fg-muted">{project.note}</p>}
               </div>
             </div>
           </motion.div>

@@ -4,7 +4,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react";
 import { projects } from "@/content/projects";
 import { site } from "@/content/site";
-import { ProjectVisual } from "@/components/mockups/ProjectVisual";
+import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Container, Section } from "@/components/ui/Section";
 import { easeOut } from "@/lib/motion";
 import { useScrollTo } from "@/lib/use-scroll-to";
@@ -115,14 +115,14 @@ export function Hero() {
             transition={{ duration: 1, delay: 0.55 }}
           >
             <div className="relative z-[1] mx-auto w-[86%] md:w-[62%]">
-              <ProjectVisual project={bySlug("palmares")} live={false} />
+              <ProjectVisual project={bySlug("zalonini")} sizes="(min-width: 768px) 62vw, 86vw" eager />
             </div>
             <motion.div
               className="absolute left-0 top-[14%] hidden w-[34%] md:block"
               style={reduce ? undefined : { x: sideLeftX }}
             >
               <div className="-rotate-[4deg] opacity-90">
-                <ProjectVisual project={bySlug("citable")} live={false} />
+                <ProjectVisual project={bySlug("lumi-geo")} sizes="34vw" />
               </div>
             </motion.div>
             <motion.div
@@ -130,7 +130,7 @@ export function Hero() {
               style={reduce ? undefined : { x: sideRightX }}
             >
               <div className="rotate-[3deg]">
-                <ProjectVisual project={bySlug("pli")} live={false} />
+                <ProjectVisual project={bySlug("dressigo")} sizes="(min-width: 768px) 17vw, 30vw" />
               </div>
             </motion.div>
           </motion.div>
