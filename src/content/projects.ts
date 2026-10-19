@@ -4,6 +4,8 @@ export type Project = {
   slug: string;
   title: string;
   category: string;
+  /** Mon rôle sur le projet, affiché à côté de la catégorie. */
+  role: string;
   /** Couleur propre au projet, utilisée pour teinter la scène. */
   accent: string;
   /** Appareil mis en avant dans la section Projets. */
@@ -37,6 +39,7 @@ export const projects: Project[] = [
     slug: "zalonini",
     title: "Zalonini Coffee",
     category: "Boutique en ligne d'un torréfacteur",
+    role: "Projet client",
     accent: "#b8642e",
     device: "browser",
     url: "zalonini-coffee-roasters-3.myshopify.com",
@@ -67,6 +70,7 @@ export const projects: Project[] = [
     slug: "dressigo",
     title: "Dressigo",
     category: "Application web et mobile avec IA",
+    role: "Cofondateur",
     accent: "#3d4ff5",
     device: "phone",
     url: "dressigo.app",
@@ -96,6 +100,7 @@ export const projects: Project[] = [
     slug: "lumi-geo",
     title: "Lumi GEO",
     category: "Extension Chrome d'analyse SEO et GEO",
+    role: "Projet personnel",
     accent: "#d6452b",
     device: "browser",
     url: "lumi-geo.pages.dev",
@@ -129,6 +134,7 @@ export const projects: Project[] = [
     slug: "methodoskills",
     title: "MethodoSkills",
     category: "Boutique de packs de skills pour Claude",
+    role: "Cofondateur",
     accent: "#f08a3c",
     device: "browser",
     url: "methodoskills-ai.app",
@@ -157,16 +163,17 @@ export const projects: Project[] = [
   {
     slug: "web-relive",
     title: "Web Relive",
-    category: "Site vitrine d'un studio web",
+    category: "Site vitrine de mon studio web",
+    role: "Fondateur",
     accent: "#13836a",
     device: "browser",
     url: "web-relive.webrelive.workers.dev",
     summary:
-      "Le site d'un studio web strasbourgeois qui crée sites vitrines et outils de gestion pour les commerces, les indépendants et les PME.",
+      "Web Relive, c'est mon studio web à Strasbourg : je crée des sites vitrines et des outils de gestion pour les commerces, les indépendants et les PME.",
     problem:
       "Un commerçant hésite à confier son site : il veut voir le résultat, comprendre le déroulé et savoir à qui il parle avant d'écrire.",
     solution:
-      "Une page qui montre au lieu d'expliquer : comparateur avant et après, maquettes de sites et d'outils internes, planning type et engagements écrits. Le tout noté entre 98 et 100 sur Lighthouse.",
+      "J'ai conçu une page qui montre au lieu d'expliquer : comparateur avant et après, maquettes de sites et d'outils internes, planning type et engagements écrits. Le tout noté entre 98 et 100 sur Lighthouse.",
     features: [
       "Comparateur avant et après à faire glisser",
       "Maquettes de sites et d'outils internes",
@@ -180,7 +187,7 @@ export const projects: Project[] = [
     gallery: [
       shot("web-relive", "avant-apres", "Comparateur avant et après d'un site de restaurant", "Le comparateur : un site de restaurant, avant et après."),
       shot("web-relive", "offres", "Les offres du studio", "Les offres, chacune avec son aperçu."),
-      shot("web-relive", "realisations", "Les réalisations du studio", "Des maquettes réalistes comme point de départ."),
+      shot("web-relive", "realisations", "Les réalisations du studio", "Des maquettes réalistes comme point de départ des projets clients."),
     ],
   },
 ];

@@ -81,7 +81,9 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
               <div className="mx-auto h-1.5 w-11 rounded-full bg-black/15" aria-hidden />
               <div className="mt-4 flex items-start justify-between gap-6">
                 <div>
-                  <p className="text-[14px] text-fg-muted">{project.category}</p>
+                  <p className="text-[14px] text-fg-muted">
+                    {project.category} · <span className="text-fg">{project.role}</span>
+                  </p>
                   <h2 id="sheet-title" className="type-title mt-1 text-[clamp(2rem,4vw,3rem)]">
                     {project.title}
                   </h2>

@@ -13,7 +13,9 @@ import { ProjectSheet } from "./ProjectSheet";
 function ProjectText({ project, onOpen }: { project: Project; onOpen: () => void }) {
   return (
     <div>
-      <p className="text-[15px] text-fg-inverse-muted">{project.category}</p>
+      <p className="text-[15px] text-fg-inverse-muted">
+        {project.category} · <span className="text-fg-inverse/85">{project.role}</span>
+      </p>
       <h3 className="type-display mt-2 text-[clamp(2.6rem,5vw,4.4rem)]">{project.title}</h3>
       <p className="type-body mt-5 max-w-[40ch] text-[18px] text-fg-inverse/80">{project.summary}</p>
       <ul className="mt-6 flex flex-wrap gap-2">

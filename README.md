@@ -50,4 +50,4 @@ Chaque projet est une entrée de `src/content/projects.ts`. Ses captures vont da
 - `telephone.webp` : la même page sur mobile (capture 390 x 844, exportée en 780 px de large), avec en haut une bande unie de 54 px (162 px en x3) de la couleur du fond, où se placent la barre d'état et l'encoche du téléphone ;
 - d'autres captures 16:10 pour la galerie (`gallery`), chacune avec une légende.
 
-`device` choisit l'appareil mis en avant dans la section Projets (`"browser"` ou `"phone"`). `links.site` affiche le bouton « Voir le site » ; sans lien public, `note` explique pourquoi.
+`role` indique ton rôle (Fondateur, Cofondateur, Projet client…), affiché à côté de la catégorie. `device` choisit l'appareil mis en avant dans la section Projets (`"browser"` ou `"phone"`). `links.site` affiche le bouton « Voir le site » ; sans lien public, `note` explique pourquoi.
