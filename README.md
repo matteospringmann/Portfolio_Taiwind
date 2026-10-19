@@ -37,7 +37,7 @@ Tout le texte vit dans `src/content/` :
 | --- | --- |
 | `site.ts` | Nom, e-mail, liens (GitHub, LinkedIn), CV, qualités |
 | `projects.ts` | Les projets affichés |
-| `timeline.ts` | Le parcours |
+| `journey.ts` | Le parcours : Epitech, année par année, et les stages |
 | `services.ts` | Les offres et le processus |
 
 Les tuiles de compétences (petits composants interactifs) sont dans `src/components/skills/`.

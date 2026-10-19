@@ -1,107 +1,190 @@
 "use client";
 
-import { ArrowUpRightIcon, BriefcaseIcon, GraduationCapIcon } from "@phosphor-icons/react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
-import { timeline, type TimelineEntry } from "@/content/timeline";
+import { ArrowUpRightIcon, BriefcaseIcon, CheckIcon, GlobeHemisphereWestIcon } from "@phosphor-icons/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
+import { useRef } from "react";
+import { experiences, school, schoolFacts, schoolYears, type SchoolYear } from "@/content/journey";
 import { Reveal } from "@/components/motion/Reveal";
+import { EpitechLogo } from "@/components/ui/EpitechLogo";
 import { Container, Section } from "@/components/ui/Section";
+import { easeOut } from "@/lib/motion";
 
-function EntryCard({ entry }: { entry: TimelineEntry }) {
-  const Icon = entry.type === "work" ? BriefcaseIcon : GraduationCapIcon;
+// Share of the rail that is filled: up to the middle of the current year.
+const progress = (school.currentYear + 0.5) / schoolYears.length;
+
+function YearDot({ index }: { index: number }) {
+  const current = index === school.currentYear;
+  const done = index < school.currentYear;
   return (
-    <div className="flex h-full flex-col rounded-[28px] bg-paper-2 p-7">
-      <div className="flex items-center justify-between">
-        <span className="font-mono text-[13px] text-fg-muted">{entry.date}</span>
-        <span className="grid size-9 place-items-center rounded-full bg-white text-fg" aria-label={entry.type === "work" ? "Expérience" : "Formation"}>
-          <Icon size={17} />
-        </span>
+    <span className="relative grid size-4 place-items-center" aria-hidden>
+      {current && <span className="absolute inset-0 rounded-full bg-accent/40 motion-safe:animate-ping" />}
+      <span
+        className={`relative size-4 rounded-full border-2 ${
+          done || current ? "border-accent bg-accent" : "border-black/15 bg-white"
+        } ${current ? "shadow-[0_0_0_5px_rgb(37_87_242/0.15)]" : ""}`}
+      />
+    </span>
+  );
+}
+
+function YearCard({ year, index }: { year: SchoolYear; index: number }) {
+  const current = index === school.currentYear;
+  const future = index > school.currentYear;
+  return (
+    <div
+      className={`h-full rounded-[24px] p-6 ${
+        current ? "bg-white shadow-[0_0_0_1.5px_rgb(37_87_242/0.35),0_24px_60px_-30px_rgb(37_87_242/0.45)]" : "bg-paper-2"
+      } ${future ? "opacity-70" : ""}`}
+      aria-current={current ? "step" : undefined}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <p className="font-mono text-[13px] text-fg-muted">{year.dates}</p>
+        {current && (
+          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-medium text-accent">En cours</span>
+        )}
       </div>
-      <h3 className="type-heading mt-8 text-[23px]">{entry.title}</h3>
-      <a
-        href={entry.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-auto inline-flex items-center gap-1 pt-6 text-[15px] text-accent hover:underline"
-      >
-        {entry.location}
-        <ArrowUpRightIcon size={14} />
-      </a>
+      <p className="mt-5 text-[14px] font-medium text-accent">{year.year}</p>
+      <h3 className="type-heading mt-1 text-[21px]">{year.goal}</h3>
+      <p className="type-body mt-3 text-[15px] text-fg-muted">{year.highlights}</p>
+      {year.internship && (
+        <p className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium shadow-[0_0_0_1px_rgb(0_0_0/0.06)]">
+          <BriefcaseIcon size={14} />
+          Stage · {year.internship}
+        </p>
+      )}
+      {year.abroad && (
+        <p className="mt-5 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-accent-soft px-3 py-1.5 text-[13px] font-medium text-accent">
+          <GlobeHemisphereWestIcon size={14} />
+          {year.abroad}
+        </p>
+      )}
     </div>
   );
 }
 
-const intro = (
-  <>
-    <h2 className="type-display text-[clamp(2.6rem,6.4vw,5.6rem)]">Un parcours, pas à pas.</h2>
-    <p className="type-body mt-6 max-w-[34ch] text-[19px] text-fg-muted">
-      De Wasselonne à Epitech Strasbourg, en passant par un stage chez Sogeti.
-    </p>
-  </>
-);
-
-export function Journey() {
+function YearTrack() {
   const reduce = useReducedMotion();
-  const section = useRef<HTMLDivElement>(null);
-  const viewport = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
-  const [distance, setDistance] = useState(0);
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      if (!track.current || !viewport.current) return;
-      setDistance(Math.max(0, track.current.scrollWidth - viewport.current.clientWidth));
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    if (track.current) ro.observe(track.current);
-    if (viewport.current) ro.observe(viewport.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
-  const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
-  const line = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const ref = useRef<HTMLOListElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const fill = reduce || inView ? progress : 0;
+  const transition = { duration: reduce ? 0 : 1.6, ease: easeOut, delay: 0.2 };
 
   return (
-    <Section id="parcours" surface="white" label="Parcours">
-      {/* Desktop: vertical scroll drives a horizontal pan */}
-      {!reduce && (
-        <div
-          ref={section}
-          className="relative hidden lg:block"
-          style={{ height: `calc(100dvh + ${distance}px)` } as CSSProperties}
-        >
-          <div ref={viewport} className="sticky top-0 flex h-[100dvh] items-center overflow-hidden">
-            <motion.div ref={track} style={{ x }} className="flex w-max items-stretch gap-5 pl-[max(2rem,calc((100vw-1240px)/2+2rem))] pr-[8vw]">
-              <div className="flex w-[600px] shrink-0 flex-col justify-center pr-16">{intro}</div>
-              {timeline.map((entry) => (
-                <div key={entry.title} className="relative w-[340px] shrink-0 pt-10">
-                  <span className="absolute left-7 top-0 size-3 rounded-full border-2 border-white bg-accent shadow-[0_0_0_1px_rgb(37_87_242/0.3)]" aria-hidden />
-                  <div className="h-[300px]">
-                    <EntryCard entry={entry} />
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-            <div className="absolute inset-x-0 bottom-[12vh] mx-auto h-[2px] w-[min(1176px,calc(100vw-4rem))] bg-black/[0.06]" aria-hidden>
-              <motion.div className="h-full origin-left bg-accent" style={{ scaleX: line }} />
-            </div>
-          </div>
-        </div>
-      )}
+    <ol ref={ref} className="relative mt-16 grid gap-4 max-lg:pl-9 lg:grid-cols-5 lg:pt-10">
+      {/* Rail: horizontal on desktop, vertical on smaller screens */}
+      <span className="absolute left-[7px] top-2 bottom-2 w-[2px] rounded-full bg-black/[0.07] lg:inset-x-2 lg:top-[7px] lg:bottom-auto lg:h-[2px] lg:w-auto" aria-hidden>
+        <motion.span
+          className="absolute inset-0 hidden origin-left rounded-full bg-accent lg:block"
+          initial={false}
+          animate={{ scaleX: fill }}
+          transition={transition}
+        />
+        <motion.span
+          className="absolute inset-0 origin-top rounded-full bg-accent lg:hidden"
+          initial={false}
+          animate={{ scaleY: fill }}
+          transition={transition}
+        />
+      </span>
+      {schoolYears.map((year, i) => (
+        <Reveal as="li" key={year.year} delay={i * 0.06} className="relative">
+          <span className="absolute -left-9 top-6 lg:-top-10 lg:left-6">
+            <YearDot index={i} />
+          </span>
+          <YearCard year={year} index={i} />
+        </Reveal>
+      ))}
+    </ol>
+  );
+}
 
-      {/* Mobile, tablet and reduced motion: a plain vertical timeline */}
-      <Container className={`py-[clamp(6rem,14vh,9rem)] ${reduce ? "" : "lg:hidden"}`}>
-        <Reveal>{intro}</Reveal>
-        <ol className="relative mt-14 space-y-4 border-l-2 border-black/[0.06] pl-6">
-          {[...timeline].reverse().map((entry) => (
-            <Reveal as="li" key={entry.title} className="relative">
-              <span className="absolute -left-[31px] top-8 size-3 rounded-full border-2 border-white bg-accent" aria-hidden />
-              <EntryCard entry={entry} />
+export function Journey() {
+  return (
+    <Section id="parcours" surface="white" label="Parcours">
+      <Container className="py-[clamp(6rem,14vh,9rem)]">
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <Reveal className="lg:col-span-7">
+            <a
+              href={school.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-4 transition-opacity hover:opacity-70"
+            >
+              <EpitechLogo className="h-7 w-auto text-accent sm:h-8" />
+              <span className="h-6 w-px bg-black/15" aria-hidden />
+              <span className="text-[15px] font-medium text-fg-muted">{school.program}</span>
+            </a>
+            <h2 className="type-display mt-6 text-[clamp(2.8rem,7vw,6rem)]">{school.name}.</h2>
+          </Reveal>
+          <Reveal delay={0.1} className="lg:col-span-5">
+            <p className="type-body max-w-[42ch] text-[19px] text-fg-muted">
+              Je suis en 4e année du Programme Grande École d&apos;Epitech, l&apos;école de l&apos;expertise
+              informatique, en année à l&apos;étranger à Barcelone. Cinq ans pour devenir expert en technologies
+              de l&apos;information.
+            </p>
+            <a
+              href={school.programUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1 text-[15px] font-medium text-accent hover:underline"
+            >
+              Découvrir le programme
+              <ArrowUpRightIcon size={14} weight="bold" />
+            </a>
+          </Reveal>
+        </div>
+
+        <YearTrack />
+
+        <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          {schoolFacts.map((f, i) => (
+            <Reveal as="li" key={f.label} delay={i * 0.06} className="rounded-[24px] bg-ink p-7 text-fg-inverse">
+              <p className="type-display text-[clamp(2.6rem,4.4vw,3.6rem)]">{f.value}</p>
+              <p className="type-heading mt-4 text-[18px]">{f.label}</p>
+              <p className="type-body mt-2 text-[15px] text-fg-inverse-muted">{f.text}</p>
             </Reveal>
           ))}
-        </ol>
+        </ul>
+
+        <div className="mt-[clamp(5rem,12vh,8rem)]">
+          <Reveal>
+            <h3 className="type-title text-[clamp(2rem,4vw,3rem)]">En entreprise.</h3>
+            <p className="type-body mt-3 max-w-[48ch] text-[18px] text-fg-muted">
+              Les stages du programme, pour mettre le code à l&apos;épreuve d&apos;une vraie équipe.
+            </p>
+          </Reveal>
+          <ul className="mt-10 grid gap-4 md:grid-cols-2">
+            {experiences.map((e, i) => (
+              <Reveal as="li" key={e.company} delay={i * 0.06} className="flex flex-col rounded-[24px] bg-paper-2 p-7">
+                <div className="flex items-start justify-between gap-4">
+                  <p className="font-mono text-[13px] text-fg-muted">{e.dates}</p>
+                  <span className="grid size-9 shrink-0 place-items-center rounded-full bg-white" aria-hidden>
+                    <BriefcaseIcon size={17} />
+                  </span>
+                </div>
+                <p className="mt-6 text-[14px] font-medium text-accent">{e.role}</p>
+                <h4 className="type-heading mt-1 text-[23px]">{e.company}</h4>
+                <ul className="mt-5 space-y-2">
+                  {e.missions.map((m) => (
+                    <li key={m} className="flex gap-2.5 text-[15px]">
+                      <CheckIcon size={15} weight="bold" className="mt-1 shrink-0 text-accent" />
+                      {m}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={e.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center gap-1 pt-7 text-[15px] text-accent hover:underline"
+                >
+                  {e.location}
+                  <ArrowUpRightIcon size={14} />
+                </a>
+              </Reveal>
+            ))}
+          </ul>
+        </div>
       </Container>
     </Section>
   );
