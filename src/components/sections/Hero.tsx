@@ -2,17 +2,17 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { projects } from "@/content/projects";
 import { site } from "@/content/site";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Container, Section } from "@/components/ui/Section";
 import { easeOut } from "@/lib/motion";
 import { useScrollTo } from "@/lib/use-scroll-to";
 
-const headline = ["Des", "interfaces", "qui", "se", "ressentent."];
-const bySlug = (slug: string) => projects.find((p) => p.slug === slug)!;
-
 export function Hero() {
+  const { t, content } = useI18n();
+  const headline = t.hero.headline.split(" ");
+  const bySlug = (slug: string) => content.projects.find((p) => p.slug === slug)!;
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const scrollTo = useScrollTo();
@@ -30,7 +30,7 @@ export function Hero() {
   const glow = useTransform(scrollYProgress, [0, 0.75], [0.35, 0.8]);
 
   return (
-    <Section id="accueil" surface="ink" label="Accueil" className={reduce ? "" : "h-[230vh]"}>
+    <Section id="accueil" surface="ink" label={t.nav.home} className={reduce ? "" : "h-[230vh]"}>
       <div ref={ref} className="absolute inset-0" aria-hidden />
       <div className={`${reduce ? "relative pb-16" : "sticky top-0 h-[100dvh]"} overflow-hidden`}>
         <motion.div
@@ -73,8 +73,7 @@ export function Hero() {
               className="mt-6 flex flex-col items-center gap-8"
             >
               <p className="type-body max-w-[46ch] text-[17px] text-fg-inverse-muted md:text-[20px]">
-                Développeur front-end formé à Epitech. Je conçois des sites et des outils web rapides, précis et
-                agréables à utiliser.
+                {t.hero.intro}
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <a
@@ -85,7 +84,7 @@ export function Hero() {
                   }}
                   className="pressable inline-flex h-12 items-center rounded-full bg-fg-inverse px-6 text-[15px] font-medium text-fg"
                 >
-                  Voir les projets
+                  {t.hero.projects}
                 </a>
                 <a
                   href="#services"
@@ -95,7 +94,7 @@ export function Hero() {
                   }}
                   className="pressable inline-flex h-12 items-center rounded-full bg-white/10 px-6 text-[15px] font-medium text-fg-inverse hover:bg-white/[0.16]"
                 >
-                  Mes services
+                  {t.hero.services}
                 </a>
               </div>
             </motion.div>

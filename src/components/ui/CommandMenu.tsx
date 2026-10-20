@@ -5,11 +5,14 @@ import {
   CopyIcon,
   FileArrowDownIcon,
   GithubLogoIcon,
+  GlobeHemisphereWestIcon,
   MagnifyingGlassIcon,
 } from "@phosphor-icons/react";
 import { useLenis } from "lenis/react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { navLinks, site } from "@/content/site";
+import { navSections, site } from "@/content/site";
+import { localeNames, localePath, locales } from "@/i18n/config";
+import { useI18n } from "@/i18n/I18nProvider";
 import { layers } from "@/lib/layers";
 import { useScrollTo } from "@/lib/use-scroll-to";
 
@@ -23,6 +26,7 @@ const normalize = (s: string) =>
 
 // Opened from the keyboard many times a session: no open/close animation on purpose.
 export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { t, locale } = useI18n();
   const scrollTo = useScrollTo();
   const lenis = useLenis();
   const [query, setQuery] = useState("");
@@ -33,17 +37,21 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
 
   const items = useMemo<Item[]>(
     () => [
-      ...[{ id: "accueil", label: "Accueil" }, ...navLinks, { id: "contact", label: "Contact" }].map((l) => ({
+      ...[
+        { id: "accueil", label: t.nav.home },
+        ...navSections.map((id) => ({ id, label: t.nav.links[id] })),
+        { id: "contact", label: t.nav.contact },
+      ].map((l) => ({
         id: l.id,
         label: l.label,
-        group: "Aller à",
+        group: t.command.goTo,
         icon: <ArrowRightIcon size={16} />,
         run: () => scrollTo(l.id),
       })),
       {
         id: "cv",
-        label: "Télécharger le CV",
-        group: "Actions",
+        label: t.command.cv,
+        group: t.command.actions,
         icon: <FileArrowDownIcon size={16} />,
         run: () => {
           const a = document.createElement("a");
@@ -54,8 +62,8 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
       },
       {
         id: "email",
-        label: "Copier l'adresse e-mail",
-        group: "Actions",
+        label: t.command.copyEmail,
+        group: t.command.actions,
         icon: <CopyIcon size={16} />,
         run: async () => {
           await navigator.clipboard.writeText(site.email);
@@ -64,15 +72,27 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
       },
       {
         id: "github",
-        label: "Ouvrir GitHub",
-        group: "Actions",
+        label: t.command.github,
+        group: t.command.actions,
         icon: <GithubLogoIcon size={16} />,
         run: () => {
           window.open(site.github, "_blank", "noopener,noreferrer");
         },
       },
+      ...locales
+        .filter((l) => l !== locale)
+        .map((l) => ({
+          id: `lang-${l}`,
+          label: localeNames[l],
+          group: t.command.language,
+          icon: <GlobeHemisphereWestIcon size={16} />,
+          run: () => {
+            // Full page load on purpose, like the FR / EN / DE links: <html lang> and every text change at once.
+            window.location.assign(new URL(`${localePath(l)}${window.location.hash}`, window.location.origin));
+          },
+        })),
     ],
-    [scrollTo],
+    [scrollTo, t, locale],
   );
 
   const results = items.filter((i) => normalize(i.label).includes(normalize(query.trim())));
@@ -107,7 +127,7 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
       <div
         role="dialog"
         aria-modal="true"
-        aria-label="Palette de commandes"
+        aria-label={t.command.label}
         className="w-full max-w-[520px] overflow-hidden rounded-[20px] bg-white text-fg shadow-[0_40px_100px_-20px_rgb(0_0_0/0.5),0_0_0_1px_rgb(0_0_0/0.06)]"
         onKeyDown={(e) => {
           if (e.key === "Escape") onClose();
@@ -135,16 +155,16 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
               setQuery(e.target.value);
               setIndex(0);
             }}
-            placeholder="Aller à une section, télécharger le CV..."
-            aria-label="Rechercher une commande"
+            placeholder={t.command.placeholder}
+            aria-label={t.command.search}
             aria-controls="command-results"
             aria-activedescendant={results[index] ? `cmd-${results[index].id}` : undefined}
             className="h-14 flex-1 bg-transparent text-[16px] outline-none placeholder:text-fg-muted"
           />
-          <kbd className="rounded-md bg-black/[0.05] px-1.5 py-0.5 font-mono text-[11px] text-fg-muted">Échap</kbd>
+          <kbd className="rounded-md bg-black/[0.05] px-1.5 py-0.5 font-mono text-[11px] text-fg-muted">{t.command.escape}</kbd>
         </div>
         <ul id="command-results" role="listbox" className="max-h-[340px] overflow-y-auto p-2" data-lenis-prevent>
-          {results.length === 0 && <li className="px-3 py-6 text-center text-[14px] text-fg-muted">Aucun résultat</li>}
+          {results.length === 0 && <li className="px-3 py-6 text-center text-[14px] text-fg-muted">{t.command.empty}</li>}
           {results.map((item, i) => (
             <li key={item.id}>
               {(i === 0 || results[i - 1].group !== item.group) && (
@@ -162,7 +182,7 @@ export function CommandMenu({ open, onClose }: { open: boolean; onClose: () => v
                 }`}
               >
                 <span className={i === index ? "text-white" : "text-fg-muted"}>{item.icon}</span>
-                <span className="flex-1">{item.id === "email" && copied ? "Adresse copiée" : item.label}</span>
+                <span className="flex-1">{item.id === "email" && copied ? t.command.copied : item.label}</span>
                 {item.id === "email" && copied && <span className="text-[12px] opacity-80">{site.email}</span>}
               </button>
             </li>

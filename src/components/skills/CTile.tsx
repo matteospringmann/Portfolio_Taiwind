@@ -3,11 +3,13 @@
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { spring } from "@/lib/motion";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
 const cells = ["E", "p", "i", "t", "e", "c", "h", "\\0"];
 
 export function CTile({ className }: { className?: string }) {
+  const { t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.6 });
   const reduce = useReducedMotion();
@@ -20,7 +22,7 @@ export function CTile({ className }: { className?: string }) {
   }, [inView, reduce]);
 
   return (
-    <Tile title="Langage C" caption="Mémoire, pointeurs, rigueur : l'école Epitech." className={className}>
+    <Tile title={t.skills.c.title} caption={t.skills.c.caption} className={className}>
       <div ref={ref} className="flex flex-1 flex-col justify-center gap-7 rounded-[18px] bg-paper-2 p-4">
         <p className="whitespace-nowrap font-mono text-[11.5px] text-fg-muted">
           while (*p) p++; <span className="text-fg">{`/* len = ${p} */`}</span>

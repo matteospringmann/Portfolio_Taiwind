@@ -3,40 +3,21 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { spring } from "@/lib/motion";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
-const sessions = {
-  "Node.js": {
-    command: "curl localhost:3000/api/projets?enLigne=true",
-    output: [
-      "HTTP/1.1 200 OK",
-      "[",
-      '  { "titre": "Dressigo", "type": "app" },',
-      '  { "titre": "Lumi GEO", "type": "extension" },',
-      '  { "titre": "MethodoSkills", "type": "e-commerce" }',
-      "]",
-    ],
-  },
-  Python: {
-    command: "python detourage.py veste.jpg --decor marbre",
-    output: [
-      "Photo redressée : 2048 x 2560",
-      "Masque calculé en 0,8 s",
-      "Décor appliqué : marbre blanc, format 4:5",
-      "Rendu enregistré : veste-marbre.webp",
-    ],
-  },
-} as const;
-type Lang = keyof typeof sessions;
+const langs = ["Node.js", "Python"] as const;
+type Lang = (typeof langs)[number];
 
 export function TerminalTile({ className }: { className?: string }) {
+  const { t } = useI18n();
   const [lang, setLang] = useState<Lang>("Node.js");
-  const s = sessions[lang];
+  const s = lang === "Node.js" ? t.skills.terminal.node : t.skills.terminal.python;
   return (
-    <Tile title="Node.js et Python" caption="Des API, des scripts, des données qui circulent." tone="dark" className={className}>
+    <Tile title={t.skills.terminal.title} caption={t.skills.terminal.caption} tone="dark" className={className}>
       <div className="flex flex-1 flex-col overflow-hidden rounded-[18px] bg-[#0d1117]">
         <div className="flex items-center gap-1 border-b border-white/[0.06] px-3 py-2">
-          {(Object.keys(sessions) as Lang[]).map((l) => (
+          {langs.map((l) => (
             <button key={l} type="button" onClick={() => setLang(l)} className="relative rounded-full px-3 py-1 text-[12px] font-medium">
               {lang === l && (
                 <motion.span layoutId="terminal-tab" transition={spring} className="absolute inset-0 rounded-full bg-white/10" />

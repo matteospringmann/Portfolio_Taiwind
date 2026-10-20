@@ -3,6 +3,7 @@
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { spring } from "@/lib/motion";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
 // A tiling window manager reorganising itself: three layouts, one grid.
@@ -11,13 +12,10 @@ const layouts = [
   ["1 / 1 / 2 / 3", "2 / 1 / 3 / 2", "2 / 2 / 3 / 3"],
   ["1 / 1 / 2 / 2", "2 / 1 / 3 / 2", "1 / 2 / 3 / 3"],
 ];
-const windows = [
-  { label: "terminal", tone: "bg-ink-3 text-fg-inverse" },
-  { label: "éditeur", tone: "bg-[#294172] text-white" },
-  { label: "navigateur", tone: "bg-white text-fg" },
-];
+const tones = ["bg-ink-3 text-fg-inverse", "bg-[#294172] text-white", "bg-white text-fg"];
 
 export function LinuxTile({ className }: { className?: string }) {
+  const { t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.6 });
   const reduce = useReducedMotion();
@@ -30,17 +28,17 @@ export function LinuxTile({ className }: { className?: string }) {
   }, [inView, reduce]);
 
   return (
-    <Tile title="Linux (Fedora)" caption="Mon environnement de travail au quotidien." className={className}>
+    <Tile title="Linux (Fedora)" caption={t.skills.linux.caption} className={className}>
       <div ref={ref} className="grid flex-1 grid-cols-2 grid-rows-2 gap-1.5 rounded-[18px] bg-[#dfe4ee] p-1.5">
-        {windows.map((w, i) => (
+        {t.skills.linux.windows.map((label, i) => (
           <motion.div
-            key={w.label}
+            key={i}
             layout
             transition={spring}
-            className={`flex items-start rounded-[10px] p-2 font-mono text-[10.5px] ${w.tone}`}
+            className={`flex items-start rounded-[10px] p-2 font-mono text-[10.5px] ${tones[i]}`}
             style={{ gridArea: layouts[layout][i] }}
           >
-            {w.label}
+            {label}
           </motion.div>
         ))}
       </div>

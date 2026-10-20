@@ -3,19 +3,9 @@
 import { CheckCircleIcon } from "@phosphor-icons/react";
 import { useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
-const code = `type Projet = {
-  titre: string;
-  stack: Techno[];
-  enLigne: boolean;
-};
-
-const dressigo: Projet = {
-  titre: "Dressigo",
-  stack: ["React Native", "Supabase"],
-  enLigne: true,
-};`;
 
 const keywords = /\b(type|const|string|boolean|false|true)\b/g;
 
@@ -34,7 +24,7 @@ function highlight(src: string) {
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(keywords, '<span style="color:#c792ea">$1</span>')
-            .replace(/\b(Projet|Techno)\b/g, '<span style="color:#ffcb6b">$1</span>'),
+            .replace(/\b(Projet|Techno|Project|Tech)\b/g, '<span style="color:#ffcb6b">$1</span>'),
         }}
       />
     ),
@@ -42,6 +32,8 @@ function highlight(src: string) {
 }
 
 export function TypeScriptTile({ className }: { className?: string }) {
+  const { t } = useI18n();
+  const code = t.skills.typescript.code;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.5 });
   const reduce = useReducedMotion();
@@ -53,13 +45,13 @@ export function TypeScriptTile({ className }: { className?: string }) {
       setLength((l) => (l >= code.length + 40 ? 0 : l + 2));
     }, 32);
     return () => clearInterval(id);
-  }, [inView, reduce]);
+  }, [inView, reduce, code.length]);
 
   const shown = code.slice(0, Math.min(length, code.length));
   const done = length >= code.length;
 
   return (
-    <Tile title="TypeScript" caption="Des types précis, des bugs attrapés avant la mise en ligne." tone="dark" className={className}>
+    <Tile title="TypeScript" caption={t.skills.typescript.caption} tone="dark" className={className}>
       <div ref={ref} className="relative flex-1 rounded-[18px] bg-[#0d1117] p-5 font-mono text-[12.5px] leading-[1.7] text-fg-inverse/85">
         <pre className="whitespace-pre-wrap">
           <code>
@@ -72,7 +64,7 @@ export function TypeScriptTile({ className }: { className?: string }) {
             done ? "opacity-100" : "opacity-0"
           }`}
         >
-          <CheckCircleIcon size={14} weight="fill" /> 0 erreur
+          <CheckCircleIcon size={14} weight="fill" /> {t.skills.typescript.ok}
         </div>
       </div>
     </Tile>

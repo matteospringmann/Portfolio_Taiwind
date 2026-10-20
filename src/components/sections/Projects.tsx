@@ -3,14 +3,16 @@
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { projects, type Project } from "@/content/projects";
+import type { Project } from "@/content/projects";
 import { Reveal } from "@/components/motion/Reveal";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Container, Section } from "@/components/ui/Section";
+import { useI18n } from "@/i18n/I18nProvider";
 import { easeOut } from "@/lib/motion";
 import { ProjectSheet } from "./ProjectSheet";
 
 function ProjectText({ project, onOpen }: { project: Project; onOpen: () => void }) {
+  const { t } = useI18n();
   return (
     <div>
       <p className="text-[15px] text-fg-inverse-muted">
@@ -31,7 +33,7 @@ function ProjectText({ project, onOpen }: { project: Project; onOpen: () => void
           onClick={onOpen}
           className="pressable group inline-flex h-12 items-center gap-2 rounded-full bg-fg-inverse px-6 text-[15px] font-medium text-fg"
         >
-          Découvrir le projet
+          {t.projects.open}
           <ArrowRightIcon size={16} weight="bold" className="transition-transform duration-200 group-hover:translate-x-0.5" />
         </button>
       </div>
@@ -59,6 +61,8 @@ function Chapter({ project, index, onActive, onOpen }: { project: Project; index
 }
 
 export function Projects() {
+  const { t, content } = useI18n();
+  const { projects } = content;
   const reduce = useReducedMotion();
   const [active, setActive] = useState(0);
   const [open, setOpen] = useState<Project | null>(null);
@@ -66,17 +70,16 @@ export function Projects() {
   const close = useCallback(() => setOpen(null), []);
 
   return (
-    <Section id="projets" surface="ink" label="Projets">
+    <Section id="projets" surface="ink" label={t.nav.links.projets}>
       <Container className="pt-[clamp(6rem,16vh,10rem)]">
         <Reveal>
           <h2 className="type-display max-w-[14ch] text-[clamp(2.6rem,6.4vw,5.6rem)]">
-            Cinq projets. Cinq terrains de jeu.
+            {t.projects.title}
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
           <p className="type-body mt-6 max-w-[46ch] text-[19px] text-fg-inverse-muted">
-            Une boutique pour un torréfacteur, une app d&apos;IA, une extension Chrome, une boutique de skills et un
-            studio web. Des projets réels : ouvrez-en un pour voir les coulisses.
+            {t.projects.intro}
           </p>
         </Reveal>
       </Container>

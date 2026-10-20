@@ -1,22 +1,25 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
 const MAIN = "#2557f2";
 const FEATURE = "#e2631f";
 
+// Positions only; labels come from the dictionary, in the same order.
 const commits = [
-  { x: 30, y: 70, color: MAIN, label: "init", above: true },
-  { x: 110, y: 70, color: MAIN, label: "accueil", above: false },
-  { x: 175, y: 30, color: FEATURE, label: "feat: panier", above: true },
-  { x: 295, y: 30, color: FEATURE, label: "fix: mouture", above: true },
-  { x: 235, y: 70, color: MAIN, label: "hotfix", above: false },
-  { x: 360, y: 70, color: MAIN, label: "merge", above: false },
-  { x: 430, y: 70, color: MAIN, label: "v1.0", above: false },
+  { x: 30, y: 70, color: MAIN, above: true },
+  { x: 110, y: 70, color: MAIN, above: false },
+  { x: 175, y: 30, color: FEATURE, above: true },
+  { x: 295, y: 30, color: FEATURE, above: true },
+  { x: 235, y: 70, color: MAIN, above: false },
+  { x: 360, y: 70, color: MAIN, above: false },
+  { x: 430, y: 70, color: MAIN, above: false },
 ];
 
 export function GitTile({ className }: { className?: string }) {
+  const { t } = useI18n();
   const reduce = useReducedMotion();
   const draw = (delay: number) => ({
     initial: { pathLength: reduce ? 1 : 0 },
@@ -26,9 +29,9 @@ export function GitTile({ className }: { className?: string }) {
   });
 
   return (
-    <Tile title="Git et GitHub" caption="Des branches propres, un historique lisible." className={className}>
+    <Tile title={t.skills.git.title} caption={t.skills.git.caption} className={className}>
       <div className="flex flex-1 items-center rounded-[18px] bg-paper-2 px-2">
-        <svg viewBox="0 0 460 110" className="w-full" role="img" aria-label="Graphe de commits avec une branche fusionnée">
+        <svg viewBox="0 0 460 110" className="w-full" role="img" aria-label={t.skills.git.graph}>
           <motion.path d="M30 70 H430" stroke={MAIN} strokeWidth="3" fill="none" strokeLinecap="round" {...draw(0)} />
           <motion.path
             d="M110 70 C140 70 145 30 175 30 H295 C325 30 330 70 360 70"
@@ -40,7 +43,7 @@ export function GitTile({ className }: { className?: string }) {
           />
           {commits.map((c, i) => (
             <motion.g
-              key={c.label}
+              key={i}
               initial={{ opacity: reduce ? 1 : 0, scale: reduce ? 1 : 0.6 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, amount: 0.6 }}
@@ -54,7 +57,7 @@ export function GitTile({ className }: { className?: string }) {
                 textAnchor="middle"
                 className="fill-fg-muted font-mono text-[10.5px]"
               >
-                {c.label}
+                {t.skills.git.commits[i]}
               </text>
             </motion.g>
           ))}

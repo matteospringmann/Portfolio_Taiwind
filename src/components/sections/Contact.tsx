@@ -5,20 +5,20 @@ import emailjs from "@emailjs/browser";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useId, useRef, useState, type FormEvent } from "react";
-import { projectTypes } from "@/content/services";
 import { site } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { Container, Section } from "@/components/ui/Section";
+import { useI18n } from "@/i18n/I18nProvider";
 import { setProjectType, useProjectType } from "@/lib/contact-intent";
 import { easeOut, spring } from "@/lib/motion";
 
 type Field = "name" | "email" | "message";
 type Status = "idle" | "sending" | "success" | "error";
 
-const validators: Record<Field, (v: string) => string | null> = {
-  name: (v) => (v.trim().length < 2 ? "Indiquez votre nom." : null),
-  email: (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()) ? null : "Cette adresse e-mail ne semble pas valide."),
-  message: (v) => (v.trim().length < 10 ? "Décrivez votre projet en quelques mots (10 caractères minimum)." : null),
+const isValid: Record<Field, (v: string) => boolean> = {
+  name: (v) => v.trim().length >= 2,
+  email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+  message: (v) => v.trim().length >= 10,
 };
 
 const inputClass =
@@ -45,6 +45,9 @@ function FieldError({ id, message }: { id: string; message: string | null }) {
 }
 
 export function Contact() {
+  const { t, content } = useI18n();
+  const { projectTypes } = content;
+  const validate = (field: Field, value: string) => (isValid[field](value) ? null : t.contact.errors[field]);
   const uid = useId();
   const form = useRef<HTMLFormElement>(null);
   const projectType = useProjectType();
@@ -52,15 +55,15 @@ export function Contact() {
   const [errors, setErrors] = useState<Record<Field, string | null>>({ name: null, email: null, message: null });
   const [copied, setCopied] = useState(false);
 
-  const check = (field: Field, value: string) => setErrors((e) => ({ ...e, [field]: validators[field](value) }));
+  const check = (field: Field, value: string) => setErrors((e) => ({ ...e, [field]: validate(field, value) }));
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const next = {
-      name: validators.name(String(data.get("name") ?? "")),
-      email: validators.email(String(data.get("email") ?? "")),
-      message: validators.message(String(data.get("message") ?? "")),
+      name: validate("name", String(data.get("name") ?? "")),
+      email: validate("email", String(data.get("email") ?? "")),
+      message: validate("message", String(data.get("message") ?? "")),
     };
     setErrors(next);
     const firstInvalid = (Object.keys(next) as Field[]).find((k) => next[k]);
@@ -105,15 +108,15 @@ export function Contact() {
   });
 
   return (
-    <Section id="contact" surface="paper" label="Contact">
+    <Section id="contact" surface="paper" label={t.nav.contact}>
       <Container className="grid gap-14 py-[clamp(6rem,16vh,10rem)] lg:grid-cols-12 lg:gap-10">
         <div className="lg:col-span-5">
           <Reveal>
-            <h2 className="type-display text-[clamp(2.6rem,6vw,5rem)]">Parlons de votre projet.</h2>
+            <h2 className="type-display text-[clamp(2.6rem,6vw,5rem)]">{t.contact.title}</h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="type-body mt-6 max-w-[38ch] text-[19px] text-fg-muted">
-              Une idée, une question, une opportunité ? Écrivez-moi, je réponds rapidement.
+              {t.contact.intro}
             </p>
             <div className="mt-10 flex items-center gap-4">
               <Image src={site.photo} alt="" width={56} height={56} className="size-14 rounded-full object-cover" />
@@ -127,7 +130,7 @@ export function Contact() {
                     type="button"
                     onClick={copyEmail}
                     className="pressable grid size-8 shrink-0 place-items-center rounded-full text-fg-muted hover:bg-black/5"
-                    aria-label={copied ? "Adresse copiée" : "Copier l'adresse e-mail"}
+                    aria-label={copied ? t.contact.copied : t.contact.copy}
                   >
                     {copied ? <CheckIcon size={15} weight="bold" className="text-success" /> : <CopyIcon size={15} />}
                   </button>
@@ -174,16 +177,16 @@ export function Contact() {
                       transition={{ duration: 0.35, delay: 0.35, ease: easeOut }}
                     />
                   </svg>
-                  <p className="type-title mt-6 text-[28px]">Message envoyé.</p>
+                  <p className="type-title mt-6 text-[28px]">{t.contact.successTitle}</p>
                   <p className="mt-2 max-w-[34ch] text-[16px] text-fg-muted">
-                    Merci ! Je reviens vers vous très vite à l&apos;adresse indiquée.
+                    {t.contact.successText}
                   </p>
                   <button
                     type="button"
                     onClick={() => setStatus("idle")}
                     className="pressable mt-8 h-11 rounded-full bg-fg/[0.06] px-5 text-[14px] font-medium hover:bg-fg/10"
                   >
-                    Envoyer un autre message
+                    {t.contact.again}
                   </button>
                 </motion.div>
               ) : (
@@ -199,24 +202,24 @@ export function Contact() {
                   className="space-y-6"
                 >
                   <fieldset>
-                    <legend className="text-[14px] font-medium">Type de projet</legend>
-                    <input type="hidden" name="project_type" value={projectTypes.find((t) => t.value === projectType)?.label} />
+                    <legend className="text-[14px] font-medium">{t.contact.type}</legend>
+                    <input type="hidden" name="project_type" value={projectTypes.find((p) => p.value === projectType)?.emailLabel} />
                     <div className="mt-2 grid grid-cols-2 gap-1 rounded-[18px] bg-paper-2 p-1 sm:grid-cols-4">
-                      {projectTypes.map((t) => (
-                        <label key={t.value} className="relative cursor-pointer">
+                      {projectTypes.map((p) => (
+                        <label key={p.value} className="relative cursor-pointer">
                           <input
                             type="radio"
                             name="project_type_choice"
-                            value={t.value}
-                            checked={projectType === t.value}
-                            onChange={() => setProjectType(t.value)}
+                            value={p.value}
+                            checked={projectType === p.value}
+                            onChange={() => setProjectType(p.value)}
                             className="peer sr-only"
                           />
-                          {projectType === t.value && (
+                          {projectType === p.value && (
                             <motion.span layoutId="project-type" transition={spring} className="absolute inset-0 rounded-[14px] bg-white shadow-sm" />
                           )}
                           <span className="relative flex h-10 items-center justify-center rounded-[14px] text-[13.5px] font-medium text-fg-muted peer-checked:text-fg peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-accent">
-                            {t.label}
+                            {p.label}
                           </span>
                         </label>
                       ))}
@@ -226,14 +229,14 @@ export function Contact() {
                   <div className="grid gap-6 sm:grid-cols-2">
                     <div>
                       <label htmlFor={`${uid}-name`} className="text-[14px] font-medium">
-                        Nom complet
+                        {t.contact.name}
                       </label>
                       <input {...fieldProps("name")} type="text" autoComplete="name" required className={`mt-2 ${inputClass}`} />
                       <FieldError id={`${uid}-name-error`} message={errors.name} />
                     </div>
                     <div>
                       <label htmlFor={`${uid}-email`} className="text-[14px] font-medium">
-                        Adresse e-mail
+                        {t.contact.email}
                       </label>
                       <input
                         {...fieldProps("email")}
@@ -249,20 +252,20 @@ export function Contact() {
 
                   <div>
                     <label htmlFor={`${uid}-phone`} className="text-[14px] font-medium">
-                      Téléphone <span className="font-normal text-fg-muted">(facultatif)</span>
+                      {t.contact.phone} <span className="font-normal text-fg-muted">{t.contact.optional}</span>
                     </label>
                     <input id={`${uid}-phone`} name="phone" type="tel" autoComplete="tel" className={`mt-2 ${inputClass}`} />
                   </div>
 
                   <div>
                     <label htmlFor={`${uid}-message`} className="text-[14px] font-medium">
-                      Votre projet
+                      {t.contact.message}
                     </label>
                     <textarea
                       {...fieldProps("message")}
                       rows={5}
                       required
-                      placeholder="Bonjour Mattéo, je souhaite..."
+                      placeholder={t.contact.placeholder}
                       className={`mt-2 resize-y ${inputClass}`}
                     />
                     <FieldError id={`${uid}-message-error`} message={errors.message} />
@@ -274,7 +277,7 @@ export function Contact() {
                       disabled={status === "sending"}
                       className="pressable inline-flex h-12 items-center justify-center gap-2 rounded-full bg-accent px-7 text-[15px] font-medium text-white hover:bg-[#1d4ad8] disabled:opacity-70"
                     >
-                      {status === "sending" ? "Envoi en cours..." : "Envoyer le message"}
+                      {status === "sending" ? t.contact.sending : t.contact.send}
                       <PaperPlaneTiltIcon size={16} weight="bold" className={status === "sending" ? "animate-pulse" : ""} />
                     </button>
                     <div aria-live="polite" className="text-[14px]">
@@ -282,7 +285,7 @@ export function Contact() {
                         <p className="flex items-start gap-1.5 text-danger">
                           <WarningCircleIcon size={16} weight="fill" className="mt-0.5 shrink-0" />
                           <span>
-                            L&apos;envoi a échoué. Écrivez-moi directement à{" "}
+                            {t.contact.failed}{" "}
                             <a href={`mailto:${site.email}`} className="underline">
                               {site.email}
                             </a>

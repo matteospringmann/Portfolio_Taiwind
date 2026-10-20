@@ -3,11 +3,11 @@
 import { ArrowRightIcon, BrowserIcon, CheckIcon, CubeIcon, WrenchIcon } from "@phosphor-icons/react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { projects } from "@/content/projects";
-import { process, services, type Service } from "@/content/services";
 import { Reveal } from "@/components/motion/Reveal";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
 import { Container, Section } from "@/components/ui/Section";
+import type { Dictionary } from "@/i18n/dictionary";
+import { useI18n } from "@/i18n/I18nProvider";
 import { setProjectType } from "@/lib/contact-intent";
 import { useScrollTo } from "@/lib/use-scroll-to";
 
@@ -18,7 +18,10 @@ const tints = {
   "sur-mesure": "bg-[linear-gradient(160deg,#1c3a30_0%,#141416_70%)]",
 } as const;
 
+type Service = Dictionary["content"]["services"][number];
+
 function Offer({ service, featured, delay }: { service: Service; featured?: boolean; delay?: number }) {
+  const { t, content } = useI18n();
   const scrollTo = useScrollTo();
   const Icon = icons[service.type];
   return (
@@ -46,14 +49,14 @@ function Offer({ service, featured, delay }: { service: Service; featured?: bool
             }}
             className="pressable group inline-flex h-11 items-center gap-2 rounded-full bg-white/10 px-5 text-[14px] font-medium text-fg-inverse hover:bg-white/[0.16]"
           >
-            Demander un devis
+            {t.services.quote}
             <ArrowRightIcon size={15} weight="bold" className="transition-transform duration-200 group-hover:translate-x-0.5" />
           </button>
         </div>
         {featured && (
           <div className="pointer-events-none relative -mb-24 mt-10 w-[115%] self-start sm:-mb-32 lg:mt-auto lg:pt-10" aria-hidden>
             <div className="rotate-[-3deg] opacity-95">
-              <ProjectVisual project={projects.find((p) => p.slug === "web-relive")!} sizes="(min-width: 1024px) 40vw, 90vw" />
+              <ProjectVisual project={content.projects.find((p) => p.slug === "web-relive")!} sizes="(min-width: 1024px) 40vw, 90vw" />
             </div>
           </div>
         )}
@@ -63,6 +66,7 @@ function Offer({ service, featured, delay }: { service: Service; featured?: bool
 }
 
 function Process() {
+  const { t, content } = useI18n();
   const ref = useRef<HTMLOListElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.7", "end 0.6"] });
   const fill = useTransform(scrollYProgress, [0, 1], [0, 1]);
@@ -72,11 +76,11 @@ function Process() {
       <div className="lg:col-span-5">
         <div className="lg:sticky lg:top-28">
           <Reveal>
-            <h3 className="type-title text-[clamp(2rem,4vw,3.2rem)]">Comment on travaille ensemble.</h3>
+            <h3 className="type-title text-[clamp(2rem,4vw,3.2rem)]">{t.services.processTitle}</h3>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="type-body mt-5 max-w-[36ch] text-[18px] text-fg-inverse-muted">
-              De l&apos;idée au déploiement, avec un interlocuteur unique du début à la fin.
+              {t.services.processIntro}
             </p>
           </Reveal>
         </div>
@@ -86,7 +90,7 @@ function Process() {
           <motion.div className="h-full origin-top bg-accent-bright" style={{ scaleY: fill }} />
         </div>
         <ol ref={ref} className="space-y-16 pl-10">
-        {process.map((step, i) => (
+        {content.process.map((step, i) => (
           <Reveal as="li" key={step.verb} delay={i * 0.05} className="relative">
             <span className="absolute -left-10 top-3 size-4 rounded-full border-[3px] border-ink bg-accent-bright" aria-hidden />
             <p className="type-display text-[clamp(2.4rem,5vw,4rem)] text-fg-inverse">{step.verb}</p>
@@ -101,15 +105,17 @@ function Process() {
 }
 
 export function Services() {
+  const { t, content } = useI18n();
+  const { services } = content;
   return (
-    <Section id="services" surface="ink" label="Services">
+    <Section id="services" surface="ink" label={t.nav.links.services}>
       <Container className="py-[clamp(6rem,16vh,10rem)]">
         <Reveal>
-          <h2 className="type-display max-w-[15ch] text-[clamp(2.6rem,6.4vw,5.6rem)]">Ce que je peux construire pour vous.</h2>
+          <h2 className="type-display max-w-[15ch] text-[clamp(2.6rem,6.4vw,5.6rem)]">{t.services.title}</h2>
         </Reveal>
         <Reveal delay={0.1}>
           <p className="type-body mt-6 max-w-[46ch] text-[19px] text-fg-inverse-muted">
-            Artisans, PME, associations ou porteurs de projet : décrivez votre besoin, je vous réponds avec une proposition sur mesure.
+            {t.services.intro}
           </p>
         </Reveal>
 

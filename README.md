@@ -29,18 +29,28 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=...
 
 Le formulaire envoie `name`, `email`, `phone`, `message` et `project_type` au template EmailJS.
 
+## Langues
+
+Le site existe en trois langues : français à `/`, anglais à `/en`, allemand à `/de`. `/fr` redirige vers `/`. Le sélecteur FR / EN / DE est dans la barre de navigation, le menu mobile, le pied de page et la palette ⌘K.
+
+- **Contenu** (`src/content/`) : chaque texte est écrit dans les trois langues côte à côte, `{ fr: "...", en: "...", de: "..." }`.
+- **Interface** (titres, boutons, formulaire) : un dictionnaire par langue dans `src/i18n/messages/`. `fr.ts` sert de modèle, et TypeScript signale une clé manquante dans `en.ts` ou `de.ts`.
+- En français, les espaces insécables avant `: ; ? !` sont ajoutés automatiquement : écris des espaces normales.
+
+Le type de projet envoyé à EmailJS reste en français, quelle que soit la langue du visiteur.
+
 ## Modifier le contenu
 
-Tout le texte vit dans `src/content/` :
+Tout le contenu vit dans `src/content/` :
 
 | Fichier | Contenu |
 | --- | --- |
-| `site.ts` | Nom, e-mail, liens (GitHub, LinkedIn), CV, qualités |
+| `site.ts` | Nom, e-mail, liens (GitHub, LinkedIn), CV, rôle et qualités |
 | `projects.ts` | Les projets affichés |
 | `journey.ts` | Le parcours : Epitech, année par année, et les stages |
 | `services.ts` | Les offres et le processus |
 
-Les tuiles de compétences (petits composants interactifs) sont dans `src/components/skills/`.
+Les tuiles de compétences (petits composants interactifs) sont dans `src/components/skills/`, leurs textes dans les dictionnaires.
 
 ### Ajouter ou modifier un projet
 

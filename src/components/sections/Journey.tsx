@@ -3,16 +3,18 @@
 import { ArrowUpRightIcon, BriefcaseIcon, CheckIcon, GlobeHemisphereWestIcon } from "@phosphor-icons/react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useRef } from "react";
-import { experiences, school, schoolFacts, schoolYears, type SchoolYear } from "@/content/journey";
 import { Reveal } from "@/components/motion/Reveal";
 import { EpitechLogo } from "@/components/ui/EpitechLogo";
 import { Container, Section } from "@/components/ui/Section";
+import type { Dictionary } from "@/i18n/dictionary";
+import { useI18n } from "@/i18n/I18nProvider";
 import { easeOut } from "@/lib/motion";
 
-// Share of the rail that is filled: up to the middle of the current year.
-const progress = (school.currentYear + 0.5) / schoolYears.length;
+type SchoolYear = Dictionary["content"]["schoolYears"][number];
 
 function YearDot({ index }: { index: number }) {
+  const { content } = useI18n();
+  const { school } = content;
   const current = index === school.currentYear;
   const done = index < school.currentYear;
   return (
@@ -28,6 +30,8 @@ function YearDot({ index }: { index: number }) {
 }
 
 function YearCard({ year, index }: { year: SchoolYear; index: number }) {
+  const { t, content } = useI18n();
+  const { school } = content;
   const current = index === school.currentYear;
   const future = index > school.currentYear;
   return (
@@ -40,7 +44,7 @@ function YearCard({ year, index }: { year: SchoolYear; index: number }) {
       <div className="flex items-center justify-between gap-3">
         <p className="font-mono text-[13px] text-fg-muted">{year.dates}</p>
         {current && (
-          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-medium text-accent">En cours</span>
+          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-[12px] font-medium text-accent">{t.journey.current}</span>
         )}
       </div>
       <p className="mt-5 text-[14px] font-medium text-accent">{year.year}</p>
@@ -49,7 +53,7 @@ function YearCard({ year, index }: { year: SchoolYear; index: number }) {
       {year.internship && (
         <p className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[13px] font-medium shadow-[0_0_0_1px_rgb(0_0_0/0.06)]">
           <BriefcaseIcon size={14} />
-          Stage · {year.internship}
+          {t.journey.internship} · {year.internship}
         </p>
       )}
       {year.abroad && (
@@ -63,6 +67,10 @@ function YearCard({ year, index }: { year: SchoolYear; index: number }) {
 }
 
 function YearTrack() {
+  const { content } = useI18n();
+  const { school, schoolYears } = content;
+  // Share of the rail that is filled: up to the middle of the current year.
+  const progress = (school.currentYear + 0.5) / schoolYears.length;
   const reduce = useReducedMotion();
   const ref = useRef<HTMLOListElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
@@ -87,7 +95,7 @@ function YearTrack() {
         />
       </span>
       {schoolYears.map((year, i) => (
-        <Reveal as="li" key={year.year} delay={i * 0.06} className="relative">
+        <Reveal as="li" key={year.dates} delay={i * 0.06} className="relative">
           <span className="absolute -left-9 top-6 lg:-top-10 lg:left-6">
             <YearDot index={i} />
           </span>
@@ -99,8 +107,10 @@ function YearTrack() {
 }
 
 export function Journey() {
+  const { t, content } = useI18n();
+  const { school, schoolFacts, experiences } = content;
   return (
-    <Section id="parcours" surface="white" label="Parcours">
+    <Section id="parcours" surface="white" label={t.nav.links.parcours}>
       <Container className="py-[clamp(6rem,14vh,9rem)]">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
           <Reveal className="lg:col-span-7">
@@ -117,18 +127,14 @@ export function Journey() {
             <h2 className="type-display mt-6 text-[clamp(2.8rem,7vw,6rem)]">{school.name}.</h2>
           </Reveal>
           <Reveal delay={0.1} className="lg:col-span-5">
-            <p className="type-body max-w-[42ch] text-[19px] text-fg-muted">
-              Je suis en 4e année du Programme Grande École d&apos;Epitech, l&apos;école de l&apos;expertise
-              informatique, en année à l&apos;étranger à Barcelone. Cinq ans pour devenir expert en technologies
-              de l&apos;information.
-            </p>
+            <p className="type-body max-w-[42ch] text-[19px] text-fg-muted">{school.intro}</p>
             <a
               href={school.programUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-1 text-[15px] font-medium text-accent hover:underline"
             >
-              Découvrir le programme
+              {t.journey.programLink}
               <ArrowUpRightIcon size={14} weight="bold" />
             </a>
           </Reveal>
@@ -148,9 +154,9 @@ export function Journey() {
 
         <div className="mt-[clamp(5rem,12vh,8rem)]">
           <Reveal>
-            <h3 className="type-title text-[clamp(2rem,4vw,3rem)]">En entreprise.</h3>
+            <h3 className="type-title text-[clamp(2rem,4vw,3rem)]">{t.journey.workTitle}</h3>
             <p className="type-body mt-3 max-w-[48ch] text-[18px] text-fg-muted">
-              Les stages du programme, pour mettre le code à l&apos;épreuve d&apos;une vraie équipe.
+              {t.journey.workIntro}
             </p>
           </Reveal>
           <ul className="mt-10 grid gap-4 md:grid-cols-2">

@@ -9,19 +9,21 @@ import { TailwindTile } from "@/components/skills/TailwindTile";
 import { TerminalTile } from "@/components/skills/TerminalTile";
 import { TypeScriptTile } from "@/components/skills/TypeScriptTile";
 import { Container, Section } from "@/components/ui/Section";
+import type { Dictionary } from "@/i18n/dictionary";
 
 const toolbox = ["HTML5", "CSS3", "JavaScript", "GitHub", "VS Code", "Zed", "PostgreSQL", "Prisma", "Docker", "Vercel"];
 
-export function Skills() {
+export function Skills({ dictionary }: { dictionary: Dictionary }) {
+  const { t } = dictionary;
   return (
-    <Section id="competences" surface="paper-2" label="Compétences" className="overflow-hidden">
+    <Section id="competences" surface="paper-2" label={t.nav.links.competences} className="overflow-hidden">
       <Container className="py-[clamp(6rem,16vh,10rem)]">
         <Reveal>
-          <h2 className="type-display max-w-[13ch] text-[clamp(2.6rem,6.4vw,5.6rem)]">Une boîte à outils, en marche.</h2>
+          <h2 className="type-display max-w-[13ch] text-[clamp(2.6rem,6.4vw,5.6rem)]">{t.skills.title}</h2>
         </Reveal>
         <Reveal delay={0.1}>
           <p className="type-body mt-6 max-w-[44ch] text-[19px] text-fg-muted">
-            Chaque tuile fait tourner un vrai bout de code. Cliquez, changez d&apos;onglet, regardez-les travailler.
+            {t.skills.intro}
           </p>
         </Reveal>
 

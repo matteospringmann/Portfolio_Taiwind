@@ -4,11 +4,13 @@ import { CommandIcon, ListIcon, XIcon } from "@phosphor-icons/react";
 import { useLenis } from "lenis/react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { useEffect, useState } from "react";
-import { navLinks, site, type SectionId } from "@/content/site";
+import { navSections, site, type SectionId } from "@/content/site";
+import { useI18n } from "@/i18n/I18nProvider";
 import { layers } from "@/lib/layers";
 import { easeOut } from "@/lib/motion";
 import { useScrollTo } from "@/lib/use-scroll-to";
 import { CommandMenu } from "./CommandMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 function useSectionWatcher() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
@@ -48,6 +50,7 @@ function useSectionWatcher() {
 }
 
 export function GlassNav() {
+  const { t, locale } = useI18n();
   const { theme, active } = useSectionWatcher();
   const scrollTo = useScrollTo();
   const lenis = useLenis();
@@ -96,7 +99,7 @@ export function GlassNav() {
               : "glass-light border-black/[0.06] text-fg shadow-[0_10px_40px_-14px_rgb(29_29_31/0.22),inset_0_1px_0_rgb(255_255_255/0.7)]"
           }`}
         >
-          <nav aria-label="Navigation principale" className="flex h-[52px] items-center justify-between pl-5 pr-2 sm:pl-6">
+          <nav aria-label={t.a11y.mainNav} className="flex h-[52px] items-center justify-between pl-5 pr-2 sm:pl-6">
             <a
               href="#accueil"
               onClick={(e) => {
@@ -109,7 +112,7 @@ export function GlassNav() {
             </a>
 
             <ul className="hidden items-center gap-1 md:flex">
-              {navLinks.map((link) => (
+              {navSections.map((id) => ({ id, label: t.nav.links[id] })).map((link) => (
                 <li key={link.id}>
                   <a
                     href={`#${link.id}`}
@@ -136,13 +139,23 @@ export function GlassNav() {
             </ul>
 
             <div className="flex items-center gap-2">
+              <LanguageSwitcher
+                locale={locale}
+                label={t.a11y.language}
+                hash={active === "accueil" ? undefined : active}
+                className="hidden lg:block"
+                itemClassName={`grid h-8 min-w-8 place-items-center rounded-full px-1.5 text-[11.5px] font-medium transition-opacity ${
+                  dark ? "text-fg-inverse" : "text-fg"
+                } opacity-55 hover:opacity-100`}
+                activeClassName={`!opacity-100 ${dark ? "bg-white/10" : "bg-black/[0.05]"}`}
+              />
               <button
                 type="button"
                 onClick={() => setCommandOpen(true)}
                 className={`pressable hidden h-8 items-center gap-1.5 rounded-full px-3 text-[12px] lg:inline-flex ${
                   dark ? "bg-white/10 text-fg-inverse/80" : "bg-black/[0.05] text-fg/70"
                 }`}
-                aria-label="Ouvrir la palette de commandes"
+                aria-label={t.a11y.openCommand}
               >
                 <CommandIcon size={13} weight="bold" />K
               </button>
@@ -154,7 +167,7 @@ export function GlassNav() {
                 }}
                 className="pressable hidden h-9 items-center rounded-full bg-accent px-4 text-[13px] font-medium text-white md:inline-flex"
               >
-                Me contacter
+                {t.nav.cta}
               </a>
               <button
                 type="button"
@@ -162,7 +175,7 @@ export function GlassNav() {
                 className="pressable grid size-10 place-items-center rounded-full md:hidden"
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
-                aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                aria-label={menuOpen ? t.a11y.closeMenu : t.a11y.openMenu}
               >
                 {menuOpen ? <XIcon size={22} /> : <ListIcon size={22} />}
               </button>
@@ -188,7 +201,7 @@ export function GlassNav() {
             style={{ zIndex: layers.nav - 1 }}
           >
             <ul className="flex flex-col gap-1">
-              {[...navLinks, { id: "contact" as const, label: "Contact" }].map((link, i) => (
+              {[...navSections, "contact" as const].map((id) => ({ id, label: id === "contact" ? t.nav.contact : t.nav.links[id] })).map((link, i) => (
                 <motion.li
                   key={link.id}
                   initial={{ opacity: 0, y: reduce ? 0 : 16 }}
@@ -208,7 +221,15 @@ export function GlassNav() {
                 </motion.li>
               ))}
             </ul>
-            <p className="mt-auto text-[15px] text-fg-muted">{site.email}</p>
+            <div className="mt-auto flex items-center justify-between gap-4">
+              <p className="truncate text-[15px] text-fg-muted">{site.email}</p>
+              <LanguageSwitcher
+                locale={locale}
+                label={t.a11y.language}
+                itemClassName="grid h-10 min-w-10 place-items-center rounded-full px-2 text-[14px] font-medium text-fg-muted"
+                activeClassName="bg-black/[0.06] !text-fg"
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

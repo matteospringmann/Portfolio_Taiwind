@@ -3,11 +3,12 @@
 import { CheckIcon, CircleNotchIcon } from "@phosphor-icons/react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
-const steps = ["Build", "Tests", "Image Docker", "Déploiement"];
-
 export function DevOpsTile({ className }: { className?: string }) {
+  const { t } = useI18n();
+  const steps = t.skills.devops.steps;
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.6 });
   const reduce = useReducedMotion();
@@ -18,12 +19,12 @@ export function DevOpsTile({ className }: { className?: string }) {
     if (!inView || reduce) return;
     const id = setInterval(() => setStep((s) => (s >= steps.length + 2 ? 0 : s + 1)), 900);
     return () => clearInterval(id);
-  }, [inView, reduce]);
+  }, [inView, reduce, steps.length]);
 
   const progress = Math.min(step, steps.length) / steps.length;
 
   return (
-    <Tile title="DevOps" caption="Intégration continue, conteneurs, mise en production." tone="dark" className={className}>
+    <Tile title="DevOps" caption={t.skills.devops.caption} tone="dark" className={className}>
       <div ref={ref} className="flex flex-1 flex-col justify-center rounded-[18px] bg-ink-3 px-5 py-6">
         <div className="relative">
           <div className="absolute left-4 right-4 top-4 h-0.5 bg-white/10" aria-hidden />
@@ -59,7 +60,7 @@ export function DevOpsTile({ className }: { className?: string }) {
           </ol>
         </div>
         <p className="mt-6 text-center font-mono text-[12px] text-fg-inverse-muted">
-          {step >= steps.length ? "✓ En ligne" : `${steps[step]} en cours...`}
+          {step >= steps.length ? t.skills.devops.live : `${steps[step]} ${t.skills.devops.running}`}
         </p>
       </div>
     </Tile>

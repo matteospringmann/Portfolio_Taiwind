@@ -8,10 +8,12 @@ import { useEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import type { Project } from "@/content/projects";
 import { ProjectVisual } from "@/components/ui/ProjectVisual";
+import { useI18n } from "@/i18n/I18nProvider";
 import { layers } from "@/lib/layers";
 import { springSheet } from "@/lib/motion";
 
 export function ProjectSheet({ project, onClose }: { project: Project | null; onClose: () => void }) {
+  const { t } = useI18n();
   const lenis = useLenis();
   const reduce = useReducedMotion();
   const drag = useDragControls();
@@ -93,7 +95,7 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                   type="button"
                   onClick={onClose}
                   className="pressable grid size-10 shrink-0 place-items-center rounded-full bg-black/[0.06] hover:bg-black/10"
-                  aria-label="Fermer"
+                  aria-label={t.projects.close}
                 >
                   <XIcon size={18} weight="bold" />
                 </button>
@@ -126,16 +128,16 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
 
               <div className="mt-12 grid gap-10 md:grid-cols-2">
                 <div>
-                  <h3 className="type-heading text-[20px]">Le problème</h3>
+                  <h3 className="type-heading text-[20px]">{t.projects.problem}</h3>
                   <p className="type-body mt-3 text-[16px] text-fg-muted">{project.problem}</p>
                 </div>
                 <div>
-                  <h3 className="type-heading text-[20px]">La solution</h3>
+                  <h3 className="type-heading text-[20px]">{t.projects.solution}</h3>
                   <p className="type-body mt-3 text-[16px] text-fg-muted">{project.solution}</p>
                 </div>
               </div>
 
-              <h3 className="type-heading mt-12 text-[20px]">Fonctionnalités</h3>
+              <h3 className="type-heading mt-12 text-[20px]">{t.projects.features}</h3>
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
                 {project.features.map((f) => (
                   <li key={f} className="flex gap-3 rounded-[14px] bg-paper-2 px-4 py-3.5 text-[15px]">
@@ -145,7 +147,7 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                 ))}
               </ul>
 
-              <h3 className="type-heading mt-12 text-[20px]">Technologies</h3>
+              <h3 className="type-heading mt-12 text-[20px]">{t.projects.stack}</h3>
               <ul className="mt-4 flex flex-wrap gap-2">
                 {project.stack.map((s) => (
                   <li key={s} className="rounded-full bg-paper-2 px-4 py-2 text-[14px] font-medium">
@@ -154,7 +156,7 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                 ))}
               </ul>
 
-              <h3 className="type-heading mt-12 text-[20px]">En images</h3>
+              <h3 className="type-heading mt-12 text-[20px]">{t.projects.gallery}</h3>
               <ul className="mt-4 grid gap-x-5 gap-y-8 md:grid-cols-2">
                 {project.gallery.map((g) => (
                   <li key={g.src}>
@@ -176,7 +178,7 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                     rel="noopener noreferrer"
                     className="pressable inline-flex h-11 items-center gap-2 rounded-full bg-accent px-5 text-[14px] font-medium text-white"
                   >
-                    Voir le site <ArrowUpRightIcon size={15} weight="bold" />
+                    {t.projects.site} <ArrowUpRightIcon size={15} weight="bold" />
                   </a>
                 )}
                 {project.links?.store && (
@@ -186,7 +188,7 @@ export function ProjectSheet({ project, onClose }: { project: Project | null; on
                     rel="noopener noreferrer"
                     className="pressable inline-flex h-11 items-center gap-2 rounded-full bg-black/[0.06] px-5 text-[14px] font-medium hover:bg-black/10"
                   >
-                    <PuzzlePieceIcon size={16} /> Chrome Web Store
+                    <PuzzlePieceIcon size={16} /> {t.projects.store}
                   </a>
                 )}
                 {project.note && <p className="text-[14px] text-fg-muted">{project.note}</p>}

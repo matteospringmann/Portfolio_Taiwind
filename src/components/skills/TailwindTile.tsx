@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 import { Tile } from "./Tile";
 
 // Real Tailwind classes, applied as-is: the preview is the class string.
@@ -11,9 +12,10 @@ const styles = [
 ];
 
 export function TailwindTile({ className }: { className?: string }) {
+  const { t } = useI18n();
   const [i, setI] = useState(0);
   return (
-    <Tile title="Tailwind CSS" caption="Le style, directement dans le balisage." className={className}>
+    <Tile title="Tailwind CSS" caption={t.skills.tailwind.caption} className={className}>
       <div className="flex flex-1 flex-col justify-between gap-4 rounded-[18px] bg-[#eef6ff] p-4">
         <div className="grid flex-1 place-items-center py-2">
           <button
@@ -21,7 +23,7 @@ export function TailwindTile({ className }: { className?: string }) {
             onClick={() => setI((n) => (n + 1) % styles.length)}
             className={`pressable text-[14px] font-semibold transition-[background-color,box-shadow,border-radius,color] duration-300 ${styles[i]}`}
           >
-            Changer de style
+            {t.skills.tailwind.button}
           </button>
         </div>
         <code className="block min-h-[3.4em] font-mono text-[11px] leading-[1.6] text-[#0b5cad]">{styles[i]}</code>
